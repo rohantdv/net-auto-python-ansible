@@ -1,0 +1,9 @@
+Interface              IP-Address      OK? Method Status                Protocol
+GigabitEthernet0/0     192.168.195.205 YES DHCP   up                    up      
+GigabitEthernet0/1     unassigned      YES unset  down                  down    
+GigabitEthernet0/2     unassigned      YES unset  down                  down    
+GigabitEthernet0/3     unassigned      YES unset  down                  down    
+GigabitEthernet1/0     unassigned      YES unset  down                  down    
+GigabitEthernet1/1     unassigned      YES unset  down                  down    
+GigabitEthernet1/2     unassigned      YES unset  down                  down    
+GigabitEthernet1/3     unassigned      YES unset  down                  down    
