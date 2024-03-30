@@ -30,6 +30,8 @@ for singledevice333 in readdevicelist333:
 
     # Connect to device
     ssh333 = ConnectHandler(**ciscodeviceinfo333)
+    host333 = ssh333.find_prompt()
+    newhost333 = host333.strip("#")
     print("#" * 25)
     print("Connecting to " + singledevice333)
 
@@ -43,8 +45,13 @@ for singledevice333 in readdevicelist333:
         output333 = ssh333.send_command(singlecli333)  # Sending command to device
         print(output333)  # Printing command output
 
+        #Taking a backup
+        backup333 = open(r"C:\Users\Rohan\Documents\backup_ " + singledevice333 + "-" + newhost333 + ".txt", "a")
+        backup333.write(">" * 5 + "Output for " + singlecli333)
+        backup333.write("\n" + output333 + "\n")
+        backup333.close()
+
     # Disconnect from device
     ssh333.disconnect()
     print("Disconnected from " + singledevice333)
     print("#" * 25)
-

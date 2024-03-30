@@ -1,5 +1,15 @@
 # Importing necessary module
 from netmiko import ConnectHandler
+import datetime
+now333 = datetime.datetime.now()
+date333 = now333.day
+month333 = now333.month
+year333 = now333.year
+hours333 = now333.hour
+min333 = now333.minute
+sec333 = now333.second
+
+customizedate333 = str(date333) + "_" + str(month333) + "_" + str(year333) + "_" + str(hours333) + "_" + str(min333) + "_" + str(sec333)
 
 # Read credentials from file
 with open(r"C:\Users\Rohan\Documents\devicecreds.txt", "r") as file:
@@ -30,6 +40,8 @@ for singledevice333 in readdevicelist333:
 
     # Connect to device
     ssh333 = ConnectHandler(**ciscodeviceinfo333)
+    host333 = ssh333.find_prompt()
+    newhost333 = host333.strip("#")
     print("#" * 25)
     print("Connecting to " + singledevice333)
 
@@ -43,8 +55,13 @@ for singledevice333 in readdevicelist333:
         output333 = ssh333.send_command(singlecli333)  # Sending command to device
         print(output333)  # Printing command output
 
+        #Taking a backup
+        backup333 = open(r"C:\Users\Rohan\Documents\backup_ " + singledevice333 + "-" + newhost333 + "-" + customizedate333 +".txt", "a")
+        backup333.write(">" * 5 + "Output for " + singlecli333)
+        backup333.write("\n" + output333 + "\n")
+        backup333.close()
+
     # Disconnect from device
     ssh333.disconnect()
     print("Disconnected from " + singledevice333)
     print("#" * 25)
-
