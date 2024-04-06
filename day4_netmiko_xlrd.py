@@ -72,7 +72,9 @@ for singleindex333 in range(1, sheet333.nrows):
 
             with open(r"C:\Users\Rohan\Documents\show_cli_backup_" + deviceip333 + "-" + newhost333 + "-" + customizedate333 + ".txt", "a") as backup3334:
                 backup3334.write("#" * 150 + "\n")
-                backup3334.write(">" * 5 + "Output for " + sincli333 + "\n")
+                backup3334.write("--" * 50 + "\n")
+                backup3334.write("Output for >>>>> " + sincli333 + " <<<<<" + "\n")
+                backup3334.write("--" * 50 + "\n")
                 backup3334.write(cli_output + "\n")
                 backup3334.write("#" * 150 + "\n")
 
