@@ -1,0 +1,384 @@
+2024-04-28 12:48:49,219 -  nornir.core -     INFO -        run() - Running task 'netmiko_send_command' with args {'command_string': 'show ip int br'} on 4 hosts
+2024-04-28 12:48:51,300 - nornir.core.task -    ERROR -      start() - Host 'IOS2': task 'netmiko_send_command' failed with traceback:
+Traceback (most recent call last):
+  File "C:\Users\Rohan\PycharmProjects\NetAuto2024\pythonProject\venv\lib\site-packages\netmiko\base_connection.py", line 1137, in establish_connection
+    self.remote_conn_pre.connect(**ssh_connect_params)
+  File "C:\Users\Rohan\PycharmProjects\NetAuto2024\pythonProject\venv\lib\site-packages\paramiko\client.py", line 409, in connect
+    raise NoValidConnectionsError(errors)
+paramiko.ssh_exception.NoValidConnectionsError: [Errno None] Unable to connect to port 22 on 192.168.195.243
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Rohan\PycharmProjects\NetAuto2024\pythonProject\venv\lib\site-packages\nornir\core\task.py", line 99, in start
+    r = self.task(self, **self.params)
+  File "C:\Users\Rohan\PycharmProjects\NetAuto2024\pythonProject\venv\lib\site-packages\nornir_netmiko\tasks\netmiko_send_command.py", line 26, in netmiko_send_command
+    net_connect = task.host.get_connection(CONNECTION_NAME, task.nornir.config)
+  File "C:\Users\Rohan\PycharmProjects\NetAuto2024\pythonProject\venv\lib\site-packages\nornir\core\inventory.py", line 494, in get_connection
+    self.open_connection(
+  File "C:\Users\Rohan\PycharmProjects\NetAuto2024\pythonProject\venv\lib\site-packages\nornir\core\inventory.py", line 546, in open_connection
+    conn_obj.open(
+  File "C:\Users\Rohan\PycharmProjects\NetAuto2024\pythonProject\venv\lib\site-packages\nornir_netmiko\connections\netmiko.py", line 59, in open
+    connection = ConnectHandler(**parameters)
+  File "C:\Users\Rohan\PycharmProjects\NetAuto2024\pythonProject\venv\lib\site-packages\netmiko\ssh_dispatcher.py", line 399, in ConnectHandler
+    return ConnectionClass(*args, **kwargs)
+  File "C:\Users\Rohan\PycharmProjects\NetAuto2024\pythonProject\venv\lib\site-packages\netmiko\base_connection.py", line 488, in __init__
+    self._open()
+  File "C:\Users\Rohan\PycharmProjects\NetAuto2024\pythonProject\venv\lib\site-packages\netmiko\base_connection.py", line 493, in _open
+    self.establish_connection()
+  File "C:\Users\Rohan\PycharmProjects\NetAuto2024\pythonProject\venv\lib\site-packages\netmiko\base_connection.py", line 1159, in establish_connection
+    raise NetmikoTimeoutException(msg)
+netmiko.exceptions.NetmikoTimeoutException: TCP connection to device failed.
+
+Common causes of this problem are:
+1. Incorrect hostname or IP address.
+2. Wrong TCP port.
+3. Intermediate firewall blocking access.
+
+Device settings: cisco_ios 192.168.195.243:22
+
+
+
+2024-04-28 12:49:36,945 -  nornir.core -     INFO -        run() - Running task 'netmiko_send_command' with args {'command_string': 'show ip int br'} on 4 hosts
+2024-04-28 12:49:38,981 - nornir.core.task -    ERROR -      start() - Host 'IOS2': task 'netmiko_send_command' failed with traceback:
+Traceback (most recent call last):
+  File "C:\Users\Rohan\PycharmProjects\NetAuto2024\pythonProject\venv\lib\site-packages\netmiko\base_connection.py", line 1137, in establish_connection
+    self.remote_conn_pre.connect(**ssh_connect_params)
+  File "C:\Users\Rohan\PycharmProjects\NetAuto2024\pythonProject\venv\lib\site-packages\paramiko\client.py", line 409, in connect
+    raise NoValidConnectionsError(errors)
+paramiko.ssh_exception.NoValidConnectionsError: [Errno None] Unable to connect to port 22 on 192.168.195.243
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Rohan\PycharmProjects\NetAuto2024\pythonProject\venv\lib\site-packages\nornir\core\task.py", line 99, in start
+    r = self.task(self, **self.params)
+  File "C:\Users\Rohan\PycharmProjects\NetAuto2024\pythonProject\venv\lib\site-packages\nornir_netmiko\tasks\netmiko_send_command.py", line 26, in netmiko_send_command
+    net_connect = task.host.get_connection(CONNECTION_NAME, task.nornir.config)
+  File "C:\Users\Rohan\PycharmProjects\NetAuto2024\pythonProject\venv\lib\site-packages\nornir\core\inventory.py", line 494, in get_connection
+    self.open_connection(
+  File "C:\Users\Rohan\PycharmProjects\NetAuto2024\pythonProject\venv\lib\site-packages\nornir\core\inventory.py", line 546, in open_connection
+    conn_obj.open(
+  File "C:\Users\Rohan\PycharmProjects\NetAuto2024\pythonProject\venv\lib\site-packages\nornir_netmiko\connections\netmiko.py", line 59, in open
+    connection = ConnectHandler(**parameters)
+  File "C:\Users\Rohan\PycharmProjects\NetAuto2024\pythonProject\venv\lib\site-packages\netmiko\ssh_dispatcher.py", line 399, in ConnectHandler
+    return ConnectionClass(*args, **kwargs)
+  File "C:\Users\Rohan\PycharmProjects\NetAuto2024\pythonProject\venv\lib\site-packages\netmiko\base_connection.py", line 488, in __init__
+    self._open()
+  File "C:\Users\Rohan\PycharmProjects\NetAuto2024\pythonProject\venv\lib\site-packages\netmiko\base_connection.py", line 493, in _open
+    self.establish_connection()
+  File "C:\Users\Rohan\PycharmProjects\NetAuto2024\pythonProject\venv\lib\site-packages\netmiko\base_connection.py", line 1159, in establish_connection
+    raise NetmikoTimeoutException(msg)
+netmiko.exceptions.NetmikoTimeoutException: TCP connection to device failed.
+
+Common causes of this problem are:
+1. Incorrect hostname or IP address.
+2. Wrong TCP port.
+3. Intermediate firewall blocking access.
+
+Device settings: cisco_ios 192.168.195.243:22
+
+
+
+2024-04-28 12:52:16,004 -  nornir.core -     INFO -        run() - Running task 'netmiko_send_command' with args {'command_string': 'show ip int br'} on 4 hosts
+2024-04-28 12:52:18,055 - nornir.core.task -    ERROR -      start() - Host 'IOS2': task 'netmiko_send_command' failed with traceback:
+Traceback (most recent call last):
+  File "C:\Users\Rohan\PycharmProjects\NetAuto2024\pythonProject\venv\lib\site-packages\netmiko\base_connection.py", line 1137, in establish_connection
+    self.remote_conn_pre.connect(**ssh_connect_params)
+  File "C:\Users\Rohan\PycharmProjects\NetAuto2024\pythonProject\venv\lib\site-packages\paramiko\client.py", line 409, in connect
+    raise NoValidConnectionsError(errors)
+paramiko.ssh_exception.NoValidConnectionsError: [Errno None] Unable to connect to port 22 on 192.168.195.243
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Rohan\PycharmProjects\NetAuto2024\pythonProject\venv\lib\site-packages\nornir\core\task.py", line 99, in start
+    r = self.task(self, **self.params)
+  File "C:\Users\Rohan\PycharmProjects\NetAuto2024\pythonProject\venv\lib\site-packages\nornir_netmiko\tasks\netmiko_send_command.py", line 26, in netmiko_send_command
+    net_connect = task.host.get_connection(CONNECTION_NAME, task.nornir.config)
+  File "C:\Users\Rohan\PycharmProjects\NetAuto2024\pythonProject\venv\lib\site-packages\nornir\core\inventory.py", line 494, in get_connection
+    self.open_connection(
+  File "C:\Users\Rohan\PycharmProjects\NetAuto2024\pythonProject\venv\lib\site-packages\nornir\core\inventory.py", line 546, in open_connection
+    conn_obj.open(
+  File "C:\Users\Rohan\PycharmProjects\NetAuto2024\pythonProject\venv\lib\site-packages\nornir_netmiko\connections\netmiko.py", line 59, in open
+    connection = ConnectHandler(**parameters)
+  File "C:\Users\Rohan\PycharmProjects\NetAuto2024\pythonProject\venv\lib\site-packages\netmiko\ssh_dispatcher.py", line 399, in ConnectHandler
+    return ConnectionClass(*args, **kwargs)
+  File "C:\Users\Rohan\PycharmProjects\NetAuto2024\pythonProject\venv\lib\site-packages\netmiko\base_connection.py", line 488, in __init__
+    self._open()
+  File "C:\Users\Rohan\PycharmProjects\NetAuto2024\pythonProject\venv\lib\site-packages\netmiko\base_connection.py", line 493, in _open
+    self.establish_connection()
+  File "C:\Users\Rohan\PycharmProjects\NetAuto2024\pythonProject\venv\lib\site-packages\netmiko\base_connection.py", line 1159, in establish_connection
+    raise NetmikoTimeoutException(msg)
+netmiko.exceptions.NetmikoTimeoutException: TCP connection to device failed.
+
+Common causes of this problem are:
+1. Incorrect hostname or IP address.
+2. Wrong TCP port.
+3. Intermediate firewall blocking access.
+
+Device settings: cisco_ios 192.168.195.243:22
+
+
+
+2024-04-28 12:55:28,934 -  nornir.core -     INFO -        run() - Running task 'netmiko_send_command' with args {'command_string': 'show ip int br'} on 3 hosts
+2024-04-28 12:58:32,640 -  nornir.core -     INFO -        run() - Running task 'netmiko_send_command' with args {'command_string': 'show run | i hostname'} on 3 hosts
+2024-04-28 12:58:36,387 -  nornir.core -     INFO -        run() - Running task 'netmiko_send_command' with args {'command_string': 'show ip int br'} on 3 hosts
+2024-04-28 12:58:36,558 -  nornir.core -     INFO -        run() - Running task 'netmiko_send_command' with args {'command_string': 'show ver | i up'} on 3 hosts
+2024-04-28 12:58:37,301 -  nornir.core -     INFO -        run() - Running task 'netmiko_send_command' with args {'command_string': 'show clock'} on 3 hosts
+2024-04-28 13:06:56,188 -  nornir.core -     INFO -        run() - Running task 'netmiko_send_command' with args {'command_string': 'show run | i hostname'} on 3 hosts
+2024-04-28 13:06:59,861 -  nornir.core -     INFO -        run() - Running task 'netmiko_send_command' with args {'command_string': 'show ip int br'} on 3 hosts
+2024-04-28 13:07:00,021 -  nornir.core -     INFO -        run() - Running task 'netmiko_send_command' with args {'command_string': 'show ver | i up'} on 3 hosts
+2024-04-28 13:07:00,200 -  nornir.core -     INFO -        run() - Running task 'netmiko_send_command' with args {'command_string': 'show clock'} on 3 hosts
+2024-04-28 13:09:06,954 -  nornir.core -     INFO -        run() - Running task 'netmiko_send_config' with args {'command_stirng': ['router ospf 3', 'int loop 39']} on 3 hosts
+2024-04-28 13:09:07,752 - nornir.core.task -    ERROR -      start() - Host 'IOS4': task 'netmiko_send_config' failed with traceback:
+Traceback (most recent call last):
+  File "C:\Users\Rohan\PycharmProjects\NetAuto2024\pythonProject\venv\lib\site-packages\nornir\core\task.py", line 99, in start
+    r = self.task(self, **self.params)
+  File "C:\Users\Rohan\PycharmProjects\NetAuto2024\pythonProject\venv\lib\site-packages\nornir_netmiko\tasks\netmiko_send_config.py", line 42, in netmiko_send_config
+    raise ValueError("Must specify either config_commands or config_file")
+ValueError: Must specify either config_commands or config_file
+
+2024-04-28 13:09:07,752 - nornir.core.task -    ERROR -      start() - Host 'IOS1': task 'netmiko_send_config' failed with traceback:
+Traceback (most recent call last):
+  File "C:\Users\Rohan\PycharmProjects\NetAuto2024\pythonProject\venv\lib\site-packages\nornir\core\task.py", line 99, in start
+    r = self.task(self, **self.params)
+  File "C:\Users\Rohan\PycharmProjects\NetAuto2024\pythonProject\venv\lib\site-packages\nornir_netmiko\tasks\netmiko_send_config.py", line 42, in netmiko_send_config
+    raise ValueError("Must specify either config_commands or config_file")
+ValueError: Must specify either config_commands or config_file
+
+2024-04-28 13:09:07,785 - nornir.core.task -    ERROR -      start() - Host 'IOS3': task 'netmiko_send_config' failed with traceback:
+Traceback (most recent call last):
+  File "C:\Users\Rohan\PycharmProjects\NetAuto2024\pythonProject\venv\lib\site-packages\nornir\core\task.py", line 99, in start
+    r = self.task(self, **self.params)
+  File "C:\Users\Rohan\PycharmProjects\NetAuto2024\pythonProject\venv\lib\site-packages\nornir_netmiko\tasks\netmiko_send_config.py", line 42, in netmiko_send_config
+    raise ValueError("Must specify either config_commands or config_file")
+ValueError: Must specify either config_commands or config_file
+
+2024-04-28 13:09:29,065 -  nornir.core -     INFO -        run() - Running task 'netmiko_send_config' with args {'command_stirng': ['router ospf 3', 'int loop 39']} on 3 hosts
+2024-04-28 13:09:29,869 - nornir.core.task -    ERROR -      start() - Host 'IOS1': task 'netmiko_send_config' failed with traceback:
+Traceback (most recent call last):
+  File "C:\Users\Rohan\PycharmProjects\NetAuto2024\pythonProject\venv\lib\site-packages\nornir\core\task.py", line 99, in start
+    r = self.task(self, **self.params)
+  File "C:\Users\Rohan\PycharmProjects\NetAuto2024\pythonProject\venv\lib\site-packages\nornir_netmiko\tasks\netmiko_send_config.py", line 42, in netmiko_send_config
+    raise ValueError("Must specify either config_commands or config_file")
+ValueError: Must specify either config_commands or config_file
+
+2024-04-28 13:09:29,956 - nornir.core.task -    ERROR -      start() - Host 'IOS3': task 'netmiko_send_config' failed with traceback:
+Traceback (most recent call last):
+  File "C:\Users\Rohan\PycharmProjects\NetAuto2024\pythonProject\venv\lib\site-packages\nornir\core\task.py", line 99, in start
+    r = self.task(self, **self.params)
+  File "C:\Users\Rohan\PycharmProjects\NetAuto2024\pythonProject\venv\lib\site-packages\nornir_netmiko\tasks\netmiko_send_config.py", line 42, in netmiko_send_config
+    raise ValueError("Must specify either config_commands or config_file")
+ValueError: Must specify either config_commands or config_file
+
+2024-04-28 13:09:29,990 - nornir.core.task -    ERROR -      start() - Host 'IOS4': task 'netmiko_send_config' failed with traceback:
+Traceback (most recent call last):
+  File "C:\Users\Rohan\PycharmProjects\NetAuto2024\pythonProject\venv\lib\site-packages\nornir\core\task.py", line 99, in start
+    r = self.task(self, **self.params)
+  File "C:\Users\Rohan\PycharmProjects\NetAuto2024\pythonProject\venv\lib\site-packages\nornir_netmiko\tasks\netmiko_send_config.py", line 42, in netmiko_send_config
+    raise ValueError("Must specify either config_commands or config_file")
+ValueError: Must specify either config_commands or config_file
+
+2024-04-28 13:09:50,730 -  nornir.core -     INFO -        run() - Running task 'netmiko_send_config' with args {'config_commands': ['router ospf 3', 'int loop 39']} on 3 hosts
+2024-04-28 14:01:15,748 -  nornir.core -     INFO -        run() - Running task 'netmiko_send_config' with args {'config_file': 'C:\\Users\\Rohan\\Documents\\config_input.txt'} on 3 hosts
+2024-04-28 14:01:16,573 - nornir.core.task -    ERROR -      start() - Host 'IOS4': task 'netmiko_send_config' failed with traceback:
+Traceback (most recent call last):
+  File "C:\Users\Rohan\PycharmProjects\NetAuto2024\pythonProject\venv\lib\site-packages\nornir\core\task.py", line 99, in start
+    r = self.task(self, **self.params)
+  File "C:\Users\Rohan\PycharmProjects\NetAuto2024\pythonProject\venv\lib\site-packages\nornir_netmiko\tasks\netmiko_send_config.py", line 40, in netmiko_send_config
+    result = net_connect.send_config_from_file(config_file=config_file, **kwargs)
+  File "C:\Users\Rohan\PycharmProjects\NetAuto2024\pythonProject\venv\lib\site-packages\netmiko\base_connection.py", line 2168, in send_config_from_file
+    with io.open(config_file, "rt", encoding="utf-8") as cfg_file:
+FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\Rohan\\Documents\\config_input.txt'
+
+2024-04-28 14:01:16,600 - nornir.core.task -    ERROR -      start() - Host 'IOS3': task 'netmiko_send_config' failed with traceback:
+Traceback (most recent call last):
+  File "C:\Users\Rohan\PycharmProjects\NetAuto2024\pythonProject\venv\lib\site-packages\nornir\core\task.py", line 99, in start
+    r = self.task(self, **self.params)
+  File "C:\Users\Rohan\PycharmProjects\NetAuto2024\pythonProject\venv\lib\site-packages\nornir_netmiko\tasks\netmiko_send_config.py", line 40, in netmiko_send_config
+    result = net_connect.send_config_from_file(config_file=config_file, **kwargs)
+  File "C:\Users\Rohan\PycharmProjects\NetAuto2024\pythonProject\venv\lib\site-packages\netmiko\base_connection.py", line 2168, in send_config_from_file
+    with io.open(config_file, "rt", encoding="utf-8") as cfg_file:
+FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\Rohan\\Documents\\config_input.txt'
+
+2024-04-28 14:01:16,625 - nornir.core.task -    ERROR -      start() - Host 'IOS1': task 'netmiko_send_config' failed with traceback:
+Traceback (most recent call last):
+  File "C:\Users\Rohan\PycharmProjects\NetAuto2024\pythonProject\venv\lib\site-packages\nornir\core\task.py", line 99, in start
+    r = self.task(self, **self.params)
+  File "C:\Users\Rohan\PycharmProjects\NetAuto2024\pythonProject\venv\lib\site-packages\nornir_netmiko\tasks\netmiko_send_config.py", line 40, in netmiko_send_config
+    result = net_connect.send_config_from_file(config_file=config_file, **kwargs)
+  File "C:\Users\Rohan\PycharmProjects\NetAuto2024\pythonProject\venv\lib\site-packages\netmiko\base_connection.py", line 2168, in send_config_from_file
+    with io.open(config_file, "rt", encoding="utf-8") as cfg_file:
+FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\Rohan\\Documents\\config_input.txt'
+
+2024-04-28 14:04:56,442 -  nornir.core -     INFO -        run() - Running task 'netmiko_send_config' with args {'config_file': 'C:\\Users\\Rohan\\Documents\\config_input.txt'} on 3 hosts
+2024-04-28 14:04:57,232 - nornir.core.task -    ERROR -      start() - Host 'IOS4': task 'netmiko_send_config' failed with traceback:
+Traceback (most recent call last):
+  File "C:\Users\Rohan\PycharmProjects\NetAuto2024\pythonProject\venv\lib\site-packages\nornir\core\task.py", line 99, in start
+    r = self.task(self, **self.params)
+  File "C:\Users\Rohan\PycharmProjects\NetAuto2024\pythonProject\venv\lib\site-packages\nornir_netmiko\tasks\netmiko_send_config.py", line 40, in netmiko_send_config
+    result = net_connect.send_config_from_file(config_file=config_file, **kwargs)
+  File "C:\Users\Rohan\PycharmProjects\NetAuto2024\pythonProject\venv\lib\site-packages\netmiko\base_connection.py", line 2168, in send_config_from_file
+    with io.open(config_file, "rt", encoding="utf-8") as cfg_file:
+FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\Rohan\\Documents\\config_input.txt'
+
+2024-04-28 14:04:57,262 - nornir.core.task -    ERROR -      start() - Host 'IOS1': task 'netmiko_send_config' failed with traceback:
+Traceback (most recent call last):
+  File "C:\Users\Rohan\PycharmProjects\NetAuto2024\pythonProject\venv\lib\site-packages\nornir\core\task.py", line 99, in start
+    r = self.task(self, **self.params)
+  File "C:\Users\Rohan\PycharmProjects\NetAuto2024\pythonProject\venv\lib\site-packages\nornir_netmiko\tasks\netmiko_send_config.py", line 40, in netmiko_send_config
+    result = net_connect.send_config_from_file(config_file=config_file, **kwargs)
+  File "C:\Users\Rohan\PycharmProjects\NetAuto2024\pythonProject\venv\lib\site-packages\netmiko\base_connection.py", line 2168, in send_config_from_file
+    with io.open(config_file, "rt", encoding="utf-8") as cfg_file:
+FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\Rohan\\Documents\\config_input.txt'
+
+2024-04-28 14:04:57,364 - nornir.core.task -    ERROR -      start() - Host 'IOS3': task 'netmiko_send_config' failed with traceback:
+Traceback (most recent call last):
+  File "C:\Users\Rohan\PycharmProjects\NetAuto2024\pythonProject\venv\lib\site-packages\nornir\core\task.py", line 99, in start
+    r = self.task(self, **self.params)
+  File "C:\Users\Rohan\PycharmProjects\NetAuto2024\pythonProject\venv\lib\site-packages\nornir_netmiko\tasks\netmiko_send_config.py", line 40, in netmiko_send_config
+    result = net_connect.send_config_from_file(config_file=config_file, **kwargs)
+  File "C:\Users\Rohan\PycharmProjects\NetAuto2024\pythonProject\venv\lib\site-packages\netmiko\base_connection.py", line 2168, in send_config_from_file
+    with io.open(config_file, "rt", encoding="utf-8") as cfg_file:
+FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\Rohan\\Documents\\config_input.txt'
+
+2024-04-28 14:08:07,103 -  nornir.core -     INFO -        run() - Running task 'netmiko_send_config' with args {'config_file': 'C:\\Users\\Rohan\\Documents\\config_input.txt'} on 3 hosts
+2024-04-28 14:08:07,882 - nornir.core.task -    ERROR -      start() - Host 'IOS3': task 'netmiko_send_config' failed with traceback:
+Traceback (most recent call last):
+  File "C:\Users\Rohan\PycharmProjects\NetAuto2024\pythonProject\venv\lib\site-packages\nornir\core\task.py", line 99, in start
+    r = self.task(self, **self.params)
+  File "C:\Users\Rohan\PycharmProjects\NetAuto2024\pythonProject\venv\lib\site-packages\nornir_netmiko\tasks\netmiko_send_config.py", line 40, in netmiko_send_config
+    result = net_connect.send_config_from_file(config_file=config_file, **kwargs)
+  File "C:\Users\Rohan\PycharmProjects\NetAuto2024\pythonProject\venv\lib\site-packages\netmiko\base_connection.py", line 2168, in send_config_from_file
+    with io.open(config_file, "rt", encoding="utf-8") as cfg_file:
+FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\Rohan\\Documents\\config_input.txt'
+
+2024-04-28 14:08:07,883 - nornir.core.task -    ERROR -      start() - Host 'IOS1': task 'netmiko_send_config' failed with traceback:
+Traceback (most recent call last):
+  File "C:\Users\Rohan\PycharmProjects\NetAuto2024\pythonProject\venv\lib\site-packages\nornir\core\task.py", line 99, in start
+    r = self.task(self, **self.params)
+  File "C:\Users\Rohan\PycharmProjects\NetAuto2024\pythonProject\venv\lib\site-packages\nornir_netmiko\tasks\netmiko_send_config.py", line 40, in netmiko_send_config
+    result = net_connect.send_config_from_file(config_file=config_file, **kwargs)
+  File "C:\Users\Rohan\PycharmProjects\NetAuto2024\pythonProject\venv\lib\site-packages\netmiko\base_connection.py", line 2168, in send_config_from_file
+    with io.open(config_file, "rt", encoding="utf-8") as cfg_file:
+FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\Rohan\\Documents\\config_input.txt'
+
+2024-04-28 14:08:07,969 - nornir.core.task -    ERROR -      start() - Host 'IOS4': task 'netmiko_send_config' failed with traceback:
+Traceback (most recent call last):
+  File "C:\Users\Rohan\PycharmProjects\NetAuto2024\pythonProject\venv\lib\site-packages\nornir\core\task.py", line 99, in start
+    r = self.task(self, **self.params)
+  File "C:\Users\Rohan\PycharmProjects\NetAuto2024\pythonProject\venv\lib\site-packages\nornir_netmiko\tasks\netmiko_send_config.py", line 40, in netmiko_send_config
+    result = net_connect.send_config_from_file(config_file=config_file, **kwargs)
+  File "C:\Users\Rohan\PycharmProjects\NetAuto2024\pythonProject\venv\lib\site-packages\netmiko\base_connection.py", line 2168, in send_config_from_file
+    with io.open(config_file, "rt", encoding="utf-8") as cfg_file:
+FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\Rohan\\Documents\\config_input.txt'
+
+2024-04-28 14:09:52,737 -  nornir.core -     INFO -        run() - Running task 'netmiko_send_config' with args {'config_file': 'C:\\Users\\Rohan\\Documents\\config_input.txt'} on 3 hosts
+2024-04-28 14:09:53,461 - nornir.core.task -    ERROR -      start() - Host 'IOS1': task 'netmiko_send_config' failed with traceback:
+Traceback (most recent call last):
+  File "C:\Users\Rohan\PycharmProjects\NetAuto2024\pythonProject\venv\lib\site-packages\nornir\core\task.py", line 99, in start
+    r = self.task(self, **self.params)
+  File "C:\Users\Rohan\PycharmProjects\NetAuto2024\pythonProject\venv\lib\site-packages\nornir_netmiko\tasks\netmiko_send_config.py", line 40, in netmiko_send_config
+    result = net_connect.send_config_from_file(config_file=config_file, **kwargs)
+  File "C:\Users\Rohan\PycharmProjects\NetAuto2024\pythonProject\venv\lib\site-packages\netmiko\base_connection.py", line 2168, in send_config_from_file
+    with io.open(config_file, "rt", encoding="utf-8") as cfg_file:
+FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\Rohan\\Documents\\config_input.txt'
+
+2024-04-28 14:09:53,569 - nornir.core.task -    ERROR -      start() - Host 'IOS3': task 'netmiko_send_config' failed with traceback:
+Traceback (most recent call last):
+  File "C:\Users\Rohan\PycharmProjects\NetAuto2024\pythonProject\venv\lib\site-packages\nornir\core\task.py", line 99, in start
+    r = self.task(self, **self.params)
+  File "C:\Users\Rohan\PycharmProjects\NetAuto2024\pythonProject\venv\lib\site-packages\nornir_netmiko\tasks\netmiko_send_config.py", line 40, in netmiko_send_config
+    result = net_connect.send_config_from_file(config_file=config_file, **kwargs)
+  File "C:\Users\Rohan\PycharmProjects\NetAuto2024\pythonProject\venv\lib\site-packages\netmiko\base_connection.py", line 2168, in send_config_from_file
+    with io.open(config_file, "rt", encoding="utf-8") as cfg_file:
+FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\Rohan\\Documents\\config_input.txt'
+
+2024-04-28 14:09:53,619 - nornir.core.task -    ERROR -      start() - Host 'IOS4': task 'netmiko_send_config' failed with traceback:
+Traceback (most recent call last):
+  File "C:\Users\Rohan\PycharmProjects\NetAuto2024\pythonProject\venv\lib\site-packages\nornir\core\task.py", line 99, in start
+    r = self.task(self, **self.params)
+  File "C:\Users\Rohan\PycharmProjects\NetAuto2024\pythonProject\venv\lib\site-packages\nornir_netmiko\tasks\netmiko_send_config.py", line 40, in netmiko_send_config
+    result = net_connect.send_config_from_file(config_file=config_file, **kwargs)
+  File "C:\Users\Rohan\PycharmProjects\NetAuto2024\pythonProject\venv\lib\site-packages\netmiko\base_connection.py", line 2168, in send_config_from_file
+    with io.open(config_file, "rt", encoding="utf-8") as cfg_file:
+FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\Rohan\\Documents\\config_input.txt'
+
+2024-04-28 14:11:28,285 -  nornir.core -     INFO -        run() - Running task 'netmiko_send_config' with args {'config_file': 'C:\\Users\\Rohan\\Documents\\config_input.txt'} on 3 hosts
+2024-04-28 14:11:28,990 - nornir.core.task -    ERROR -      start() - Host 'IOS1': task 'netmiko_send_config' failed with traceback:
+Traceback (most recent call last):
+  File "C:\Users\Rohan\PycharmProjects\NetAuto2024\pythonProject\venv\lib\site-packages\nornir\core\task.py", line 99, in start
+    r = self.task(self, **self.params)
+  File "C:\Users\Rohan\PycharmProjects\NetAuto2024\pythonProject\venv\lib\site-packages\nornir_netmiko\tasks\netmiko_send_config.py", line 40, in netmiko_send_config
+    result = net_connect.send_config_from_file(config_file=config_file, **kwargs)
+  File "C:\Users\Rohan\PycharmProjects\NetAuto2024\pythonProject\venv\lib\site-packages\netmiko\base_connection.py", line 2168, in send_config_from_file
+    with io.open(config_file, "rt", encoding="utf-8") as cfg_file:
+FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\Rohan\\Documents\\config_input.txt'
+
+2024-04-28 14:11:29,129 - nornir.core.task -    ERROR -      start() - Host 'IOS3': task 'netmiko_send_config' failed with traceback:
+Traceback (most recent call last):
+  File "C:\Users\Rohan\PycharmProjects\NetAuto2024\pythonProject\venv\lib\site-packages\nornir\core\task.py", line 99, in start
+    r = self.task(self, **self.params)
+  File "C:\Users\Rohan\PycharmProjects\NetAuto2024\pythonProject\venv\lib\site-packages\nornir_netmiko\tasks\netmiko_send_config.py", line 40, in netmiko_send_config
+    result = net_connect.send_config_from_file(config_file=config_file, **kwargs)
+  File "C:\Users\Rohan\PycharmProjects\NetAuto2024\pythonProject\venv\lib\site-packages\netmiko\base_connection.py", line 2168, in send_config_from_file
+    with io.open(config_file, "rt", encoding="utf-8") as cfg_file:
+FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\Rohan\\Documents\\config_input.txt'
+
+2024-04-28 14:11:29,170 - nornir.core.task -    ERROR -      start() - Host 'IOS4': task 'netmiko_send_config' failed with traceback:
+Traceback (most recent call last):
+  File "C:\Users\Rohan\PycharmProjects\NetAuto2024\pythonProject\venv\lib\site-packages\nornir\core\task.py", line 99, in start
+    r = self.task(self, **self.params)
+  File "C:\Users\Rohan\PycharmProjects\NetAuto2024\pythonProject\venv\lib\site-packages\nornir_netmiko\tasks\netmiko_send_config.py", line 40, in netmiko_send_config
+    result = net_connect.send_config_from_file(config_file=config_file, **kwargs)
+  File "C:\Users\Rohan\PycharmProjects\NetAuto2024\pythonProject\venv\lib\site-packages\netmiko\base_connection.py", line 2168, in send_config_from_file
+    with io.open(config_file, "rt", encoding="utf-8") as cfg_file:
+FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\Rohan\\Documents\\config_input.txt'
+
+2024-04-28 14:12:14,204 -  nornir.core -     INFO -        run() - Running task 'netmiko_send_config' with args {'config_file': 'C:\\Users\\Rohan\\Documents\\config_input.txt'} on 3 hosts
+2024-04-28 14:16:56,203 -  nornir.core -     INFO -        run() - Running task 'napalm_get' with args {'getattr': ['get_facts', 'get_config']} on 3 hosts
+2024-04-28 14:16:56,205 - nornir.core.task -    ERROR -      start() - Host 'IOS1': task 'napalm_get' failed with traceback:
+Traceback (most recent call last):
+  File "C:\Users\Rohan\PycharmProjects\NetAuto2024\pythonProject\venv\lib\site-packages\nornir\core\task.py", line 99, in start
+    r = self.task(self, **self.params)
+TypeError: napalm_get() missing 1 required positional argument: 'getters'
+
+2024-04-28 14:16:56,205 - nornir.core.task -    ERROR -      start() - Host 'IOS4': task 'napalm_get' failed with traceback:
+Traceback (most recent call last):
+  File "C:\Users\Rohan\PycharmProjects\NetAuto2024\pythonProject\venv\lib\site-packages\nornir\core\task.py", line 99, in start
+    r = self.task(self, **self.params)
+TypeError: napalm_get() missing 1 required positional argument: 'getters'
+
+2024-04-28 14:16:56,207 - nornir.core.task -    ERROR -      start() - Host 'IOS3': task 'napalm_get' failed with traceback:
+Traceback (most recent call last):
+  File "C:\Users\Rohan\PycharmProjects\NetAuto2024\pythonProject\venv\lib\site-packages\nornir\core\task.py", line 99, in start
+    r = self.task(self, **self.params)
+TypeError: napalm_get() missing 1 required positional argument: 'getters'
+
+2024-04-28 14:17:25,124 -  nornir.core -     INFO -        run() - Running task 'napalm_get' with args {'getters': ['get_facts', 'get_config']} on 3 hosts
+2024-04-28 14:20:41,116 -  nornir.core -     INFO -        run() - Running task 'napalm_configure' with args {'filename': 'C:\\Users\\Rohan\\Documents\\config_input.txt'} on 3 hosts
+2024-04-28 14:20:45,651 - nornir.core.task -    ERROR -      start() - Host 'IOS3': task 'napalm_configure' failed with traceback:
+Traceback (most recent call last):
+  File "C:\Users\Rohan\PycharmProjects\NetAuto2024\pythonProject\venv\lib\site-packages\nornir\core\task.py", line 99, in start
+    r = self.task(self, **self.params)
+  File "C:\Users\Rohan\PycharmProjects\NetAuto2024\pythonProject\venv\lib\site-packages\nornir_napalm\plugins\tasks\napalm_configure.py", line 36, in napalm_configure
+    device.load_merge_candidate(filename=filename, config=configuration)
+  File "C:\Users\Rohan\PycharmProjects\NetAuto2024\pythonProject\venv\lib\site-packages\napalm\ios\ios.py", line 320, in load_merge_candidate
+    return_status, msg = self._load_candidate_wrapper(
+  File "C:\Users\Rohan\PycharmProjects\NetAuto2024\pythonProject\venv\lib\site-packages\napalm\ios\ios.py", line 287, in _load_candidate_wrapper
+    (return_status, msg) = self._scp_file(
+  File "C:\Users\Rohan\PycharmProjects\NetAuto2024\pythonProject\venv\lib\site-packages\napalm\ios\ios.py", line 736, in _scp_file
+    return self._xfer_file(
+  File "C:\Users\Rohan\PycharmProjects\NetAuto2024\pythonProject\venv\lib\site-packages\napalm\ios\ios.py", line 804, in _xfer_file
+    raise CommandErrorException(msg)
+napalm.base.exceptions.CommandErrorException: SCP file transfers are not enabled. Configure 'ip scp server enable' on the device.
+
+2024-04-28 14:22:43,905 -  nornir.core -     INFO -        run() - Running task 'napalm_configure' with args {'filename': 'C:\\Users\\Rohan\\Documents\\config_input.txt'} on 3 hosts
+2024-04-28 14:24:02,041 -  nornir.core -     INFO -        run() - Running task 'napalm_configure' with args {'filename': 'C:\\Users\\Rohan\\Documents\\config_input.txt'} on 3 hosts
+2024-04-28 14:29:46,490 -  nornir.core -     INFO -        run() - Running task 'netmiko_send_command' with args {'command_string': 'show ip int br'} on 3 hosts
+2024-04-28 14:32:14,304 -  nornir.core -     INFO -        run() - Running task 'netmiko_send_command' with args {'command_string': 'show ip int br'} on 3 hosts
+2024-04-28 14:33:23,548 -  nornir.core -     INFO -        run() - Running task 'netmiko_send_command' with args {'command_string': 'show run | i hostname'} on 3 hosts
+2024-04-28 14:33:27,640 -  nornir.core -     INFO -        run() - Running task 'netmiko_send_command' with args {'command_string': 'show ip int br'} on 3 hosts
+2024-04-28 14:33:27,791 -  nornir.core -     INFO -        run() - Running task 'netmiko_send_command' with args {'command_string': 'show ver | i up'} on 3 hosts
+2024-04-28 14:33:27,963 -  nornir.core -     INFO -        run() - Running task 'netmiko_send_command' with args {'command_string': 'show clock'} on 3 hosts

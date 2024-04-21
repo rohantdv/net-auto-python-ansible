@@ -1,0 +1,8 @@
+---
+
+IOSROUTER:
+  platform: ios
+  username: admin
+  password: cisco
+
+...
