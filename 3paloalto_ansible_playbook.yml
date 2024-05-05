@@ -126,3 +126,48 @@ PLAY RECAP *********************************************************************
 PA1                        : ok=8    changed=8    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
 
 root@rohan-virtual-machine:/etc/ansible/Ansible_Playbooks#
+-
+
+###############################################################################################
+##########################################Final-Result#########################################
+###############################################################################################
+
+root@rohan-virtual-machine:/etc/ansible/Ansible_Playbooks# ansible-playbook 3paloalto_ansible_playbook.yml
+
+PLAY [PANOS] ***********************************************************************************
+
+TASK [Create tag object 'Prod'] ****************************************************************
+ok: [PA1]
+
+TASK [Create object 'Test-prod-obj'] ***********************************************************
+ok: [PA1]
+
+TASK [Create object 'Test-prod-obj'] ***********************************************************
+ok: [PA1]
+
+TASK [Create object 'Test-prod-obj'] ***********************************************************
+ok: [PA1]
+
+TASK [Create object group 'Obj-Group-Prod'] ****************************************************
+ok: [PA1]
+
+TASK [Create service group 'Prod-Services'] ****************************************************
+ok: [PA1]
+
+TASK [add SSH inbound rule to Panorama device group] *******************************************
+ok: [PA1]
+
+TASK [add a nat rule] **************************************************************************
+ok: [PA1]
+
+PLAY RECAP *************************************************************************************
+PA1                        : ok=8    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+root@rohan-virtual-machine:/etc/ansible/Ansible_Playbooks# 
+root@rohan-virtual-machine:/etc/ansible/Ansible_Playbooks# date
+Sabtu 11 Mei 2024 06:50:10  +08
+root@rohan-virtual-machine:/etc/ansible/Ansible_Playbooks#
+
+
+
+
