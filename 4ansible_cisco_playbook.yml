@@ -1,0 +1,420 @@
+root@rohan-virtual-machine:/etc/ansible/Ansible_Playbooks# cat 4ansible_cisco_playbook.yml
+---
+- hosts: CISCO_CAT_IOS
+  gather_facts: false
+  connection: network_cli
+
+  tasks:
+  - name: Configure interface IP address
+    cisco.ios.ios_config:
+      lines:
+        - interface loopback 221
+        - ip address 192.168.21.1 255.255.255.0
+        - no shutdown
+
+  - name: Configure interface IP address
+    cisco.ios.ios_config:
+      lines:
+        - interface loopback 331
+        - ip address 192.168.31.1 255.255.255.0
+        - no shutdown
+
+  - name: configure ip helpers on multiple interfaces
+    cisco.ios.ios_config:
+      lines:
+        - ip helper-address 192.168.11.11
+        - ip helper-address 192.168.11.12
+        - no shutdown
+      parents: '{{ item }}'
+    with_items:
+      - interface loopback 221
+      - interface loopback 331
+
+  - name: create new ACL into SWITCH
+    cisco.ios.ios_config:
+      lines:
+        - 11 permit ip host 192.1.2.1 any log
+        - 12 permit ip host 192.1.2.2 any log
+        - 13 permit ip host 192.1.2.3 any log
+        - 14 permit ip host 192.1.2.4 any log
+        - 15 permit ip host 192.1.2.5 any log
+      parents: ip access-list extended TEST-ACL
+      before: no ip access-list extended TEST-ACL
+      match: exact #command lines must be an equal match
+...
+root@rohan-virtual-machine:/etc/ansible/Ansible_Playbooks# 
+root@rohan-virtual-machine:/etc/ansible/Ansible_Playbooks# ansible-playbook 4ansible_cisco_playbook.yml -vvvv
+ansible-playbook [core 2.16.5]
+  config file = /etc/ansible/ansible.cfg
+  configured module search path = ['/root/.ansible/plugins/modules', '/usr/share/ansible/plugins/modules']
+  ansible python module location = /usr/lib/python3/dist-packages/ansible
+  ansible collection location = /root/.ansible/collections:/usr/share/ansible/collections
+  executable location = /usr/bin/ansible-playbook
+  python version = 3.10.12 (main, Nov 20 2023, 15:14:05) [GCC 11.4.0] (/usr/bin/python3)
+  jinja version = 3.0.3
+  libyaml = True
+Using /etc/ansible/ansible.cfg as config file
+setting up inventory plugins
+Loading collection ansible.builtin from 
+host_list declined parsing /etc/ansible/hosts as it did not pass its verify_file() method
+script declined parsing /etc/ansible/hosts as it did not pass its verify_file() method
+auto declined parsing /etc/ansible/hosts as it did not pass its verify_file() method
+Parsed /etc/ansible/hosts inventory source with ini plugin
+Loading collection cisco.ios from /root/.ansible/collections/ansible_collections/cisco/ios
+Loading callback plugin default of type stdout, v2.0 from /usr/lib/python3/dist-packages/ansible/plugins/callback/default.py
+Skipping callback 'default', as we already have a stdout callback.
+Skipping callback 'minimal', as we already have a stdout callback.
+Skipping callback 'oneline', as we already have a stdout callback.
+
+PLAYBOOK: 4ansible_cisco_playbook.yml *********************************************************************************************************************************************************************
+Positional arguments: 4ansible_cisco_playbook.yml
+verbosity: 4
+connection: ssh
+become_method: sudo
+tags: ('all',)
+inventory: ('/etc/ansible/hosts',)
+forks: 5
+1 plays in 4ansible_cisco_playbook.yml
+
+PLAY [CISCO_CAT_IOS] **************************************************************************************************************************************************************************************
+
+TASK [Configure interface IP address] *********************************************************************************************************************************************************************
+task path: /etc/ansible/Ansible_Playbooks/4ansible_cisco_playbook.yml:7
+redirecting (type: connection) ansible.builtin.network_cli to ansible.netcommon.network_cli
+Loading collection ansible.netcommon from /root/.ansible/collections/ansible_collections/ansible/netcommon
+Loading collection ansible.utils from /root/.ansible/collections/ansible_collections/ansible/utils
+redirecting (type: terminal) ansible.builtin.ios to cisco.ios.ios
+redirecting (type: cliconf) ansible.builtin.ios to cisco.ios.ios
+<192.168.195.138> Using network group action cisco.ios.ios for cisco.ios.ios_config
+<192.168.195.138> attempting to start connection
+<192.168.195.138> using connection plugin ansible.netcommon.network_cli
+Found ansible-connection at path /usr/bin/ansible-connection
+<192.168.195.138> local domain socket does not exist, starting it
+<192.168.195.138> control socket path is /root/.ansible/pc/d8084d63f0
+<192.168.195.138> Loading collection ansible.builtin from
+<192.168.195.138> redirecting (type: connection) ansible.builtin.network_cli to ansible.netcommon.network_cli
+<192.168.195.138> Loading collection ansible.netcommon from /root/.ansible/collections/ansible_collections/ansible/netcommon
+<192.168.195.138> Loading collection ansible.utils from /root/.ansible/collections/ansible_collections/ansible/utils
+<192.168.195.138> redirecting (type: terminal) ansible.builtin.ios to cisco.ios.ios
+<192.168.195.138> Loading collection cisco.ios from /root/.ansible/collections/ansible_collections/cisco/ios
+<192.168.195.138> redirecting (type: cliconf) ansible.builtin.ios to cisco.ios.ios
+<192.168.195.138> local domain socket listeners started successfully
+<192.168.195.138> loaded cliconf plugin ansible_collections.cisco.ios.plugins.cliconf.ios from path /root/.ansible/collections/ansible_collections/cisco/ios/plugins/cliconf/ios.py for network_os ios
+<192.168.195.138> ssh type is set to auto
+<192.168.195.138> autodetecting ssh_type
+<192.168.195.138> ssh type is now set to libssh
+<192.168.195.138> Loading collection ansible.builtin from 
+<192.168.195.138> local domain socket path is /root/.ansible/pc/d8084d63f0
+<192.168.195.138> ANSIBLE_NETWORK_IMPORT_MODULES: enabled
+<192.168.195.138> ANSIBLE_NETWORK_IMPORT_MODULES: found cisco.ios.ios_config  at /root/.ansible/collections/ansible_collections/cisco/ios/plugins/modules/ios_config.py
+<192.168.195.138> ANSIBLE_NETWORK_IMPORT_MODULES: running cisco.ios.ios_config
+<192.168.195.138> ANSIBLE_NETWORK_IMPORT_MODULES: complete
+[WARNING]: To ensure idempotency and correct diff the input configuration lines should be similar to how they appear if present in the running configuration on device
+changed: [192.168.195.138] => {
+    "banners": {},
+    "changed": true,
+    "commands": [
+        "interface loopback 221",
+        "ip address 192.168.21.1 255.255.255.0",
+        "no shutdown"
+    ],
+    "invocation": {
+        "module_args": {
+            "after": null,
+            "backup": false,
+            "backup_options": null,
+            "before": null,
+            "defaults": false,
+            "diff_against": null,
+            "diff_ignore_lines": null,
+            "intended_config": null,
+            "lines": [
+                "interface loopback 221",
+                "ip address 192.168.21.1 255.255.255.0",
+                "no shutdown"
+            ],
+            "match": "line",
+            "multiline_delimiter": "@",
+            "parents": null,
+            "replace": "line",
+            "running_config": null,
+            "save_when": "never",
+            "src": null
+        }
+    },
+    "updates": [
+        "interface loopback 221",
+        "ip address 192.168.21.1 255.255.255.0",
+        "no shutdown"
+    ]
+}
+
+TASK [Configure interface IP address] *********************************************************************************************************************************************************************
+task path: /etc/ansible/Ansible_Playbooks/4ansible_cisco_playbook.yml:14
+redirecting (type: connection) ansible.builtin.network_cli to ansible.netcommon.network_cli
+Loading collection ansible.netcommon from /root/.ansible/collections/ansible_collections/ansible/netcommon
+Loading collection ansible.utils from /root/.ansible/collections/ansible_collections/ansible/utils
+redirecting (type: terminal) ansible.builtin.ios to cisco.ios.ios
+redirecting (type: cliconf) ansible.builtin.ios to cisco.ios.ios
+<192.168.195.138> Using network group action cisco.ios.ios for cisco.ios.ios_config
+<192.168.195.138> attempting to start connection
+<192.168.195.138> using connection plugin ansible.netcommon.network_cli
+Found ansible-connection at path /usr/bin/ansible-connection
+<192.168.195.138> found existing local domain socket, using it!
+<192.168.195.138> invoked shell using ssh_type: libssh
+<192.168.195.138> ssh connection done, setting terminal
+<192.168.195.138> loaded terminal plugin for network_os ios
+<192.168.195.138> firing event: on_open_shell()
+<192.168.195.138> ssh connection has completed successfully
+<192.168.195.138> updating play_context for connection
+<192.168.195.138> Loading collection ansible.builtin from 
+<192.168.195.138> local domain socket path is /root/.ansible/pc/d8084d63f0
+<192.168.195.138> ANSIBLE_NETWORK_IMPORT_MODULES: enabled
+<192.168.195.138> ANSIBLE_NETWORK_IMPORT_MODULES: found cisco.ios.ios_config  at /root/.ansible/collections/ansible_collections/cisco/ios/plugins/modules/ios_config.py
+<192.168.195.138> ANSIBLE_NETWORK_IMPORT_MODULES: running cisco.ios.ios_config
+<192.168.195.138> ANSIBLE_NETWORK_IMPORT_MODULES: complete
+changed: [192.168.195.138] => {
+    "banners": {},
+    "changed": true,
+    "commands": [
+        "interface loopback 331",
+        "ip address 192.168.31.1 255.255.255.0",
+        "no shutdown"
+    ],
+    "invocation": {
+        "module_args": {
+            "after": null,
+            "backup": false,
+            "backup_options": null,
+            "before": null,
+            "defaults": false,
+            "diff_against": null,
+            "diff_ignore_lines": null,
+            "intended_config": null,
+            "lines": [
+                "interface loopback 331",
+                "ip address 192.168.31.1 255.255.255.0",
+                "no shutdown"
+            ],
+            "match": "line",
+            "multiline_delimiter": "@",
+            "parents": null,
+            "replace": "line",
+            "running_config": null,
+            "save_when": "never",
+            "src": null
+        }
+    },
+    "updates": [
+        "interface loopback 331",
+        "ip address 192.168.31.1 255.255.255.0",
+        "no shutdown"
+    ]
+}
+
+TASK [configure ip helpers on multiple interfaces] ********************************************************************************************************************************************************
+task path: /etc/ansible/Ansible_Playbooks/4ansible_cisco_playbook.yml:21
+redirecting (type: connection) ansible.builtin.network_cli to ansible.netcommon.network_cli
+Loading collection ansible.netcommon from /root/.ansible/collections/ansible_collections/ansible/netcommon
+Loading collection ansible.utils from /root/.ansible/collections/ansible_collections/ansible/utils
+redirecting (type: terminal) ansible.builtin.ios to cisco.ios.ios
+redirecting (type: cliconf) ansible.builtin.ios to cisco.ios.ios
+<192.168.195.138> Using network group action cisco.ios.ios for cisco.ios.ios_config
+<192.168.195.138> attempting to start connection
+<192.168.195.138> using connection plugin ansible.netcommon.network_cli
+Found ansible-connection at path /usr/bin/ansible-connection
+<192.168.195.138> found existing local domain socket, using it!
+<192.168.195.138> updating play_context for connection
+<192.168.195.138> Loading collection ansible.builtin from 
+<192.168.195.138> local domain socket path is /root/.ansible/pc/d8084d63f0
+<192.168.195.138> ANSIBLE_NETWORK_IMPORT_MODULES: enabled
+<192.168.195.138> ANSIBLE_NETWORK_IMPORT_MODULES: found cisco.ios.ios_config  at /root/.ansible/collections/ansible_collections/cisco/ios/plugins/modules/ios_config.py
+<192.168.195.138> ANSIBLE_NETWORK_IMPORT_MODULES: running cisco.ios.ios_config
+<192.168.195.138> ANSIBLE_NETWORK_IMPORT_MODULES: complete
+changed: [192.168.195.138] => (item=interface loopback 221) => {
+    "ansible_loop_var": "item",
+    "banners": {},
+    "changed": true,
+    "commands": [
+        "interface loopback 221",
+        "ip helper-address 192.168.11.11",
+        "ip helper-address 192.168.11.12",
+        "no shutdown"
+    ],
+    "invocation": {
+        "module_args": {
+            "after": null,
+            "backup": false,
+            "backup_options": null,
+            "before": null,
+            "defaults": false,
+            "diff_against": null,
+            "diff_ignore_lines": null,
+            "intended_config": null,
+            "lines": [
+                "ip helper-address 192.168.11.11",
+                "ip helper-address 192.168.11.12",
+                "no shutdown"
+            ],
+            "match": "line",
+            "multiline_delimiter": "@",
+            "parents": [
+                "interface loopback 221"
+            ],
+            "replace": "line",
+            "running_config": null,
+            "save_when": "never",
+            "src": null
+        }
+    },
+    "item": "interface loopback 221",
+    "updates": [
+        "interface loopback 221",
+        "ip helper-address 192.168.11.11",
+        "ip helper-address 192.168.11.12",
+        "no shutdown"
+    ],
+    "warnings": [
+        "To ensure idempotency and correct diff the input configuration lines should be similar to how they appear if present in the running configuration on device"
+    ]
+}
+<192.168.195.138> Using network group action cisco.ios.ios for cisco.ios.ios_config
+<192.168.195.138> attempting to start connection
+<192.168.195.138> using connection plugin ansible.netcommon.network_cli
+Found ansible-connection at path /usr/bin/ansible-connection
+<192.168.195.138> found existing local domain socket, using it!
+<192.168.195.138> updating play_context for connection
+<192.168.195.138> Loading collection ansible.builtin from 
+<192.168.195.138> local domain socket path is /root/.ansible/pc/d8084d63f0
+<192.168.195.138> ANSIBLE_NETWORK_IMPORT_MODULES: enabled
+<192.168.195.138> ANSIBLE_NETWORK_IMPORT_MODULES: found cisco.ios.ios_config  at /root/.ansible/collections/ansible_collections/cisco/ios/plugins/modules/ios_config.py
+<192.168.195.138> ANSIBLE_NETWORK_IMPORT_MODULES: running cisco.ios.ios_config
+<192.168.195.138> ANSIBLE_NETWORK_IMPORT_MODULES: complete
+changed: [192.168.195.138] => (item=interface loopback 331) => {
+    "ansible_loop_var": "item",
+    "banners": {},
+    "changed": true,
+    "commands": [
+        "interface loopback 331",
+        "ip helper-address 192.168.11.11",
+        "ip helper-address 192.168.11.12",
+        "no shutdown"
+    ],
+    "invocation": {
+        "module_args": {
+            "after": null,
+            "backup": false,
+            "backup_options": null,
+            "before": null,
+            "defaults": false,
+            "diff_against": null,
+            "diff_ignore_lines": null,
+            "intended_config": null,
+            "lines": [
+                "ip helper-address 192.168.11.11",
+                "ip helper-address 192.168.11.12",
+                "no shutdown"
+            ],
+            "match": "line",
+            "multiline_delimiter": "@",
+            "parents": [
+                "interface loopback 331"
+            ],
+            "replace": "line",
+            "running_config": null,
+            "save_when": "never",
+            "src": null
+        }
+    },
+    "item": "interface loopback 331",
+    "updates": [
+        "interface loopback 331",
+        "ip helper-address 192.168.11.11",
+        "ip helper-address 192.168.11.12",
+        "no shutdown"
+    ],
+    "warnings": [
+        "To ensure idempotency and correct diff the input configuration lines should be similar to how they appear if present in the running configuration on device",
+        "To ensure idempotency and correct diff the input configuration lines should be similar to how they appear if present in the running configuration on device"
+    ]
+}
+
+TASK [create new ACL into SWITCH] *************************************************************************************************************************************************************************
+task path: /etc/ansible/Ansible_Playbooks/4ansible_cisco_playbook.yml:32
+redirecting (type: connection) ansible.builtin.network_cli to ansible.netcommon.network_cli
+Loading collection ansible.netcommon from /root/.ansible/collections/ansible_collections/ansible/netcommon
+Loading collection ansible.utils from /root/.ansible/collections/ansible_collections/ansible/utils
+redirecting (type: terminal) ansible.builtin.ios to cisco.ios.ios
+redirecting (type: cliconf) ansible.builtin.ios to cisco.ios.ios
+<192.168.195.138> Using network group action cisco.ios.ios for cisco.ios.ios_config
+<192.168.195.138> attempting to start connection
+<192.168.195.138> using connection plugin ansible.netcommon.network_cli
+Found ansible-connection at path /usr/bin/ansible-connection
+<192.168.195.138> found existing local domain socket, using it!
+<192.168.195.138> updating play_context for connection
+<192.168.195.138> Loading collection ansible.builtin from 
+<192.168.195.138> local domain socket path is /root/.ansible/pc/d8084d63f0
+<192.168.195.138> ANSIBLE_NETWORK_IMPORT_MODULES: enabled
+<192.168.195.138> ANSIBLE_NETWORK_IMPORT_MODULES: found cisco.ios.ios_config  at /root/.ansible/collections/ansible_collections/cisco/ios/plugins/modules/ios_config.py
+<192.168.195.138> ANSIBLE_NETWORK_IMPORT_MODULES: running cisco.ios.ios_config
+<192.168.195.138> ANSIBLE_NETWORK_IMPORT_MODULES: complete
+changed: [192.168.195.138] => {
+    "banners": {},
+    "changed": true,
+    "commands": [
+        "no ip access-list extended TEST-ACL",
+        "ip access-list extended TEST-ACL",
+        "11 permit ip host 192.1.2.1 any log",
+        "12 permit ip host 192.1.2.2 any log",
+        "13 permit ip host 192.1.2.3 any log",
+        "14 permit ip host 192.1.2.4 any log",
+        "15 permit ip host 192.1.2.5 any log"
+    ],
+    "invocation": {
+        "module_args": {
+            "after": null,
+            "backup": false,
+            "backup_options": null,
+            "before": [
+                "no ip access-list extended TEST-ACL"
+            ],
+            "defaults": false,
+            "diff_against": null,
+            "diff_ignore_lines": null,
+            "intended_config": null,
+            "lines": [
+                "11 permit ip host 192.1.2.1 any log",
+                "12 permit ip host 192.1.2.2 any log",
+                "13 permit ip host 192.1.2.3 any log",
+                "14 permit ip host 192.1.2.4 any log",
+                "15 permit ip host 192.1.2.5 any log"
+            ],
+            "match": "exact",
+            "multiline_delimiter": "@",
+            "parents": [
+                "ip access-list extended TEST-ACL"
+            ],
+            "replace": "line",
+            "running_config": null,
+            "save_when": "never",
+            "src": null
+        }
+    },
+    "updates": [
+        "no ip access-list extended TEST-ACL",
+        "ip access-list extended TEST-ACL",
+        "11 permit ip host 192.1.2.1 any log",
+        "12 permit ip host 192.1.2.2 any log",
+        "13 permit ip host 192.1.2.3 any log",
+        "14 permit ip host 192.1.2.4 any log",
+        "15 permit ip host 192.1.2.5 any log"
+    ]
+}
+
+PLAY RECAP ************************************************************************************************************************************************************************************************
+192.168.195.138            : ok=4    changed=4    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+root@rohan-virtual-machine:/etc/ansible/Ansible_Playbooks# 
+root@rohan-virtual-machine:/etc/ansible/Ansible_Playbooks# date
+Sabtu 11 Mei 2024 10:21:52  +08
+root@rohan-virtual-machine:/etc/ansible/Ansible_Playbooks#
