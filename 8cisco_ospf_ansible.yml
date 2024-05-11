@@ -1,0 +1,94 @@
+
+
+###PLAYBOOK###
+
+#8cisco_ospf_ansible.yml
+
+---
+- hosts: CISCO_CAT_IOS
+  connection: network_cli
+
+  vars_files:
+    - ospfdata.yml
+
+  tasks:
+    - name: Configure OSPF process on the Cisco L3 devices
+      ios_config:
+        src: ospf_jinja_template.j2
+...
+
+#ospf_jinja_template.j2
+
+{% for singleospf in ospfdata %}
+router ospf {{ singleospf.process_id }}
+ router-id {{ singleospf.router_id }} 
+ network {{ singleospf.net_id1 }} {{ singleospf.wild_id1 }} area {{ singleospf.area_id1 }} 
+ network {{ singleospf.net_id2 }} {{ singleospf.wild_id2 }} area {{ singleospf.area_id2 }}
+ network {{ singleospf.net_id3 }} {{ singleospf.wild_id3 }} area {{ singleospf.area_id3 }}
+{% endfor %}
+
+
+
+#ospfdata.yml
+---
+ospfdata:
+  - process_id: "99"
+    router_id: "9.9.9.9"
+    net_id1: "1.1.1.0"
+    wild_id1: "0.0.0.255"
+    area_id1: "0"
+    net_id2: "2.2.0.0"
+    wild_id2: "0.0.255.255"
+    area_id2: "1"
+    net_id3: "3.0.0.0"
+    wild_id3: "0.255.255.255"
+    area_id3: "2"
+...
+
+
+
+
+###:RESULT:###
+
+root@rohan-vm:/etc/ansible/ansible-playbook# ansible-playbook 8cisco_ospf_ansible.yml -v
+Using /etc/ansible/ansible.cfg as config file
+
+PLAY [CISCO_CAT_IOS] *****************************************************************************************************************************************
+
+TASK [Gathering Facts] ***************************************************************************************************************************************
+[WARNING]: ansible-pylibssh not installed, falling back to paramiko
+ok: [192.168.195.156]
+ok: [192.168.195.155]
+
+TASK [Configure OSPF process on the Cisco L3 devices] ********************************************************************************************************
+[WARNING]: To ensure idempotency and correct diff the input configuration lines should be similar to how they appear if present in the running configuration
+on device including the indentation
+changed: [192.168.195.156] => {"banners": {}, "changed": true, "commands": ["router ospf 99", "network 1.1.1.0 0.0.0.255 area 0", "network 2.2.0.0 0.0.255.255 area 1", "network 3.0.0.0 0.255.255.255 area 2"], "updates": ["router ospf 99", "network 1.1.1.0 0.0.0.255 area 0", "network 2.2.0.0 0.0.255.255 area 1", "network 3.0.0.0 0.255.255.255 area 2"]}
+changed: [192.168.195.155] => {"banners": {}, "changed": true, "commands": ["router ospf 99", "network 1.1.1.0 0.0.0.255 area 0", "network 2.2.0.0 0.0.255.255 area 1", "network 3.0.0.0 0.255.255.255 area 2"], "updates": ["router ospf 99", "network 1.1.1.0 0.0.0.255 area 0", "network 2.2.0.0 0.0.255.255 area 1", "network 3.0.0.0 0.255.255.255 area 2"]}
+
+PLAY RECAP ***************************************************************************************************************************************************
+192.168.195.155            : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+192.168.195.156            : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+root@rohan-vm:/etc/ansible/ansible-playbook# 
+root@rohan-vm:/etc/ansible/ansible-playbook# ansible-playbook 8cisco_ospf_ansible.yml -v
+Using /etc/ansible/ansible.cfg as config file
+
+PLAY [CISCO_CAT_IOS] *****************************************************************************************************************************************
+
+TASK [Gathering Facts] ***************************************************************************************************************************************
+[WARNING]: ansible-pylibssh not installed, falling back to paramiko
+ok: [192.168.195.156]
+ok: [192.168.195.155]
+
+TASK [Configure OSPF process on the Cisco L3 devices] ********************************************************************************************************
+ok: [192.168.195.155] => {"changed": false}
+ok: [192.168.195.156] => {"changed": false}
+
+PLAY RECAP ***************************************************************************************************************************************************
+192.168.195.155            : ok=2    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+192.168.195.156            : ok=2    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+root@rohan-vm:/etc/ansible/ansible-playbook# date
+Ahad 12 Mei 2024 01:53:48  +08
+root@rohan-vm:/etc/ansible/ansible-playbook#

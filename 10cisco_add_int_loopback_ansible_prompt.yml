@@ -1,0 +1,130 @@
+---
+- hosts: CISCO_CAT_IOS
+  connection: network_cli
+
+  vars_prompt:
+    - name: loopback_num
+      prompt: "Enter the Loopback ID number: "
+      private: no
+    - name: loopback_ip
+      prompt: "Enter the Loopback IP address mask: "
+      private: no
+
+  tasks:
+    - name: Create the loopback {{ loopback_num }}
+      cisco.ios.ios_interfaces:
+        config:
+          - name: loopback {{ loopback_num }}
+            enabled: True
+            description: loopback created by ansible prompt
+
+    - name: Assign IP address mask to loopback {{ loopback_ip }}
+      cisco.ios.ios_l3_interfaces:
+        config:
+          - name: loopback {{ loopback_num }}
+            ipv4:
+              - address: "{{ loopback_ip }}"
+
+    - name: Verify if loopback {{ loopback_num }} is created or not?
+      ios_command:
+        commands:
+          - show ip int br
+          - show run int loopback {{ loopback_num }}
+      register: output_commands
+
+    - debug: var=output_commands.stdout_lines
+
+...
+
+
+
+###RESULT###
+
+root@rohan-vm:/etc/ansible/ansible-playbook# ansible-playbook 10cisco_add_int_loopback_ansible_prompt.yml
+Enter the Loopback ID number: : 41
+Enter the Loopback IP address mask: : 4.4.4.1 255.0.0.0
+
+PLAY [CISCO_CAT_IOS] **************************************************************************************************************************************
+
+TASK [Gathering Facts] ************************************************************************************************************************************
+[WARNING]: ansible-pylibssh not installed, falling back to paramiko
+ok: [192.168.195.155]
+ok: [192.168.195.156]
+
+TASK [Create the loopback 41] *****************************************************************************************************************************
+changed: [192.168.195.156]
+changed: [192.168.195.155]
+
+TASK [Assign IP address mask to loopback 4.4.4.1 255.0.0.0] ***********************************************************************************************
+changed: [192.168.195.155]
+changed: [192.168.195.156]
+
+TASK [Verify if loopback 41 is created or not?] ***********************************************************************************************************
+ok: [192.168.195.155]
+ok: [192.168.195.156]
+
+TASK [debug] **********************************************************************************************************************************************
+ok: [192.168.195.155] => {
+    "output_commands.stdout_lines": [
+        [
+            "Interface              IP-Address      OK? Method Status                Protocol",
+            "GigabitEthernet0/0     192.168.195.155 YES DHCP   up                    up      ",
+            "GigabitEthernet0/1     unassigned      YES unset  down                  down    ",
+            "GigabitEthernet0/2     unassigned      YES unset  down                  down    ",
+            "GigabitEthernet0/3     unassigned      YES unset  down                  down    ",
+            "GigabitEthernet1/0     unassigned      YES unset  down                  down    ",
+            "GigabitEthernet1/1     unassigned      YES unset  down                  down    ",
+            "GigabitEthernet1/2     unassigned      YES unset  down                  down    ",
+            "GigabitEthernet1/3     unassigned      YES unset  down                  down    ",
+            "Loopback12             unassigned      YES unset  up                    up      ",
+            "Loopback41             4.4.4.1         YES manual up                    up      ",
+            "Loopback67             6.6.6.7         YES manual up                    up      ",
+            "Loopback87             unassigned      YES unset  up                    up"
+        ],
+        [
+            "Building configuration...",
+            "",
+            "Current configuration : 106 bytes",
+            "!",
+            "interface Loopback41",
+            " description loopback created by ansible prompt",
+            " ip address 4.4.4.1 255.0.0.0",
+            "end"
+        ]
+    ]
+}
+ok: [192.168.195.156] => {
+    "output_commands.stdout_lines": [
+        [
+            "Interface              IP-Address      OK? Method Status                Protocol",
+            "GigabitEthernet0/0     192.168.195.156 YES DHCP   up                    up      ",
+            "GigabitEthernet0/1     unassigned      YES unset  down                  down    ",
+            "GigabitEthernet0/2     unassigned      YES unset  down                  down    ",
+            "GigabitEthernet0/3     unassigned      YES unset  down                  down    ",
+            "GigabitEthernet1/0     unassigned      YES unset  down                  down    ",
+            "GigabitEthernet1/1     unassigned      YES unset  down                  down    ",
+            "GigabitEthernet1/2     unassigned      YES unset  down                  down    ",
+            "GigabitEthernet1/3     unassigned      YES unset  down                  down    ",
+            "Loopback12             unassigned      YES unset  up                    up      ",
+            "Loopback41             4.4.4.1         YES manual up                    up      ",
+            "Loopback67             6.6.6.7         YES manual up                    up      ",
+            "Loopback87             unassigned      YES unset  up                    up"
+        ],
+        [
+            "Building configuration...",
+            "",
+            "Current configuration : 106 bytes",
+            "!",
+            "interface Loopback41",
+            " description loopback created by ansible prompt",
+            " ip address 4.4.4.1 255.0.0.0",
+            "end"
+        ]
+    ]
+}
+
+PLAY RECAP ************************************************************************************************************************************************
+192.168.195.155            : ok=5    changed=2    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+192.168.195.156            : ok=5    changed=2    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+root@rohan-vm:/etc/ansible/ansible-playbook#

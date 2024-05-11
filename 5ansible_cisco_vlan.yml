@@ -1,0 +1,92 @@
+#Task:
+#
+#CONFIG FOR CISCO VLAN CREATION:
+#vlan [100]
+# name [pythonvlan100]
+#vlan [101]
+# name [pythonvlan101]
+#vlan [102]
+# name [pythonvlan102]
+#
+#1. build a template using JINJA file
+#a. {% for loops start here %}
+#b. {{VAR}}
+#c. {% endfor %}
+
+
+###PLAYBOOK###
+
+root@rohan-vm:/etc/ansible/ansible-playbook# ansible-playbook 5cisco_vlan_ansible.yml
+
+PLAY [CISCO_CAT_IOS] **************************************************************************************************************************************************************************************
+
+TASK [Gathering Facts] ************************************************************************************************************************************************************************************
+[WARNING]: ansible-pylibssh not installed, falling back to paramiko
+ok: [192.168.195.156]
+ok: [192.168.195.155]
+
+TASK [Create new VLANs for Cisco Switches] ****************************************************************************************************************************************************************
+[WARNING]: To ensure idempotency and correct diff the input configuration lines should be similar to how they appear if present in the running configuration on device including the indentation
+changed: [192.168.195.156]
+changed: [192.168.195.155]
+
+PLAY RECAP ************************************************************************************************************************************************************************************************
+192.168.195.155            : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+192.168.195.156            : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+root@rohan-vm:/etc/ansible/ansible-playbook# 
+root@rohan-vm:/etc/ansible/ansible-playbook# 
+root@rohan-vm:/etc/ansible/ansible-playbook# 
+root@rohan-vm:/etc/ansible/ansible-playbook# 
+root@rohan-vm:/etc/ansible/ansible-playbook# ls -l
+total 16
+-rw-r--r-- 1 root root 3114 Mei  12 09:44 3paloalto_config_ansible.yml
+-rw-r--r-- 1 root root  207 Mei  12 09:56 5cisco_vlan_ansible.yml
+-rw-r--r-- 1 root root  236 Mei  12 10:02 vlandata333.yml
+-rw-r--r-- 1 root root  107 Mei  12 10:03 vlan_jinja_template.j2
+root@rohan-vm:/etc/ansible/ansible-playbook# 
+root@rohan-vm:/etc/ansible/ansible-playbook# 
+root@rohan-vm:/etc/ansible/ansible-playbook# 
+root@rohan-vm:/etc/ansible/ansible-playbook# 
+root@rohan-vm:/etc/ansible/ansible-playbook# 
+root@rohan-vm:/etc/ansible/ansible-playbook# 
+root@rohan-vm:/etc/ansible/ansible-playbook# 
+root@rohan-vm:/etc/ansible/ansible-playbook# cat 5cisco_vlan_ansible.yml
+---
+- hosts: CISCO_CAT_IOS
+  connection: network_cli
+
+  vars_files:
+    - vlandata333.yml
+
+  tasks:
+    - name: Create new VLANs for Cisco Switches
+      ios_config:
+        src: vlan_jinja_template.j2
+
+...
+root@rohan-vm:/etc/ansible/ansible-playbook# 
+root@rohan-vm:/etc/ansible/ansible-playbook# cat vlan_jinja_template.j2
+{% for singlevlan in vlandata333 %}
+vlan {{ singlevlan.vlan_id }}
+ name {{ singlevlan.name }}
+{% endfor %}
+root@rohan-vm:/etc/ansible/ansible-playbook# 
+root@rohan-vm:/etc/ansible/ansible-playbook# 
+root@rohan-vm:/etc/ansible/ansible-playbook# cat vlandata333.yml
+---
+vlandata333:
+  - vlan_id: "101"
+    name: "IT_VLAN_101"
+  - vlan_id: "102"
+    name: "HR_VLAN_102"
+  - vlan_id: "103"
+    name: "PC_VLAN_103"
+  - vlan_id: "104"
+    name: "VC_VLAN_104"
+  - vlan_id: "105"
+    name: "DC_VLAN_105"
+...
+root@rohan-vm:/etc/ansible/ansible-playbook# date
+Ahad 12 Mei 2024 10:06:18  +08
+root@rohan-vm:/etc/ansible/ansible-playbook#

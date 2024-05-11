@@ -1,0 +1,143 @@
+#Task:
+#
+#Interface creation
+
+#configure terminal
+#interface loopback 0
+#ip address 192.168.1.1 255.255.255.255
+#description Management Loopback
+#exit
+#end
+#write memory
+
+#
+#1. build a template using JINJA file
+#a. {% for loops start here %}
+#b. {{VAR}}
+#c. {% endfor %}
+
+
+###PLAYBOOK###
+
+#6cisco_interface_ansible.yml
+
+---
+- hosts: CISCO_CAT_IOS
+  connection: network_cli
+
+  vars_files:
+    - interfacedata333.yml
+
+  tasks:
+    - name: Create new interfaces for Cisco Switches
+      ios_config:
+        src: interface_jinja_template.j2
+...
+
+#interface_jinja_template.j2
+
+{% for singleinterface in interfacedata333 %}
+interface loopback {{ singleinterface.int_id }}
+ ip address {{ singleinterface.int_ip }} {{ singleinterface.mask }} 
+ description {{ singleinterface.desc_in }}
+{% endfor %}
+
+
+
+#interfacedata333.yml
+---
+interfacedata333:
+  - int_id: "101"
+    int_ip: "101.1.1.1"
+    mask: "255.255.255.255"
+    desc_in: "MGMTLOOPBACK1"
+  - int_id: "102"
+    int_ip: "102.1.1.1"
+    mask: "255.255.255.255"
+    desc_in: "MGMTLOOPBACK2"
+  - int_id: "103"
+    int_ip: "103.1.1.1"
+    mask: "255.255.255.255"
+    desc_in: "MGMTLOOPBACK3"
+  - int_id: "104"
+    int_ip: "104.1.1.1"
+    mask: "255.255.255.255"
+    desc_in: "MGMTLOOPBACK4"
+  - int_id: "105"
+    int_ip: "105.1.1.1"
+    mask: "255.255.255.255"
+    desc_in: "MGMTLOOPBACK5"
+...
+
+
+
+
+
+root@rohan-vm:/etc/ansible/ansible-playbook# ansible-playbook 6cisco_interface_ansible.yml 
+
+PLAY [CISCO_CAT_IOS] **********************************************************************************************************************************************************************************************
+
+TASK [Gathering Facts] ********************************************************************************************************************************************************************************************
+[WARNING]: ansible-pylibssh not installed, falling back to paramiko
+ok: [192.168.195.156]
+ok: [192.168.195.155]
+
+TASK [Create new interfaces for Cisco Switches] *******************************************************************************************************************************************************************
+[WARNING]: To ensure idempotency and correct diff the input configuration lines should be similar to how they appear if present in the running configuration on device including the indentation
+changed: [192.168.195.156]
+changed: [192.168.195.155]
+
+PLAY RECAP ********************************************************************************************************************************************************************************************************
+192.168.195.155            : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+192.168.195.156            : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+root@rohan-vm:/etc/ansible/ansible-playbook# 
+root@rohan-vm:/etc/ansible/ansible-playbook# cat 6cisco_interface_ansible.yml
+---
+- hosts: CISCO_CAT_IOS
+  connection: network_cli
+
+  vars_files:
+    - interfacedata333.yml
+
+  tasks:
+    - name: Create new interfaces for Cisco Switches
+      ios_config:
+        src: interface_jinja_template.j2
+...
+root@rohan-vm:/etc/ansible/ansible-playbook# 
+root@rohan-vm:/etc/ansible/ansible-playbook# cat interfacedata333.yml
+---
+interfacedata333:
+  - int_id: "101"
+    int_ip: "101.1.1.1"
+    mask: "255.255.255.255"
+    desc_in: "MGMTLOOPBACK1"
+  - int_id: "102"
+    int_ip: "102.1.1.1"
+    mask: "255.255.255.255"
+    desc_in: "MGMTLOOPBACK2"
+  - int_id: "103"
+    int_ip: "103.1.1.1"
+    mask: "255.255.255.255"
+    desc_in: "MGMTLOOPBACK3"
+  - int_id: "104"
+    int_ip: "104.1.1.1"
+    mask: "255.255.255.255"
+    desc_in: "MGMTLOOPBACK4"
+  - int_id: "105"
+    int_ip: "105.1.1.1"
+    mask: "255.255.255.255"
+    desc_in: "MGMTLOOPBACK5"
+...
+root@rohan-vm:/etc/ansible/ansible-playbook# 
+root@rohan-vm:/etc/ansible/ansible-playbook# cat interface_jinja_template.j2
+{% for singleinterface in interfacedata333 %}
+interface loopback {{ singleinterface.int_id }}
+ ip address {{ singleinterface.int_ip }} {{ singleinterface.mask }} 
+ description {{ singleinterface.desc_in }}
+{% endfor %}
+root@rohan-vm:/etc/ansible/ansible-playbook# 
+root@rohan-vm:/etc/ansible/ansible-playbook# date
+Ahad 12 Mei 2024 10:29:49  +08
+root@rohan-vm:/etc/ansible/ansible-playbook#

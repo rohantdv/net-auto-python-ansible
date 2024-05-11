@@ -1,0 +1,107 @@
+root@rohan-vm:/etc/ansible/ansible-playbook# cat 11cisco_remove_int_loop_ansible.yml
+---
+- hosts: CISCO_CAT_IOS
+  connection: network_cli
+
+  vars_prompt:
+    - name: loopback_num
+      prompt: "Enter the Loopback ID number"
+      private: no
+
+  tasks:
+    - name: Delete the attributes of loopback {{ loopback_num }}
+      cisco.ios.ios_l3_interfaces:
+        config:
+          - name: loopback {{ loopback_num }}
+        state: deleted
+
+    - name: Delete the loopback interface {{ loopback_num }}
+      cisco.ios.config:
+        lines:
+          - "no interface loopback {{ loopback_num }}"
+
+    - name: Verify if loopback {{ loopback_num }} is deleted or not?
+      ios_command:
+        commands:
+          - show ip int br
+          - show run | i {{ loopback_num }}
+      register: output_commands
+
+    - debug: var=output_commands.stdout_lines
+...
+root@rohan-vm:/etc/ansible/ansible-playbook#
+
+###Result###
+
+root@rohan-vm:/etc/ansible/ansible-playbook# ansible-playbook 11cisco_remove_int_loop_ansible.yml
+Enter the Loopback ID number: 91
+
+PLAY [CISCO_CAT_IOS] **************************************************************************************************************************************************************************************
+
+TASK [Gathering Facts] ************************************************************************************************************************************************************************************
+[WARNING]: ansible-pylibssh not installed, falling back to paramiko
+ok: [192.168.195.155]
+ok: [192.168.195.156]
+
+TASK [Delete the attributes of loopback 91] ***************************************************************************************************************************************************************
+ok: [192.168.195.155]
+ok: [192.168.195.156]
+
+TASK [Delete the loopback interface 91] *******************************************************************************************************************************************************************
+[WARNING]: To ensure idempotency and correct diff the input configuration lines should be similar to how they appear if present in the running configuration on device
+changed: [192.168.195.155]
+changed: [192.168.195.156]
+
+TASK [Verify if loopback 91 is deleted or not?] ***********************************************************************************************************************************************************
+ok: [192.168.195.155]
+ok: [192.168.195.156]
+
+TASK [debug] **********************************************************************************************************************************************************************************************
+ok: [192.168.195.155] => {
+    "output_commands.stdout_lines": [
+        [
+            "Interface              IP-Address      OK? Method Status                Protocol",
+            "GigabitEthernet0/0     192.168.195.155 YES DHCP   up                    up      ",
+            "GigabitEthernet0/1     unassigned      YES unset  down                  down    ",
+            "GigabitEthernet0/2     unassigned      YES unset  down                  down    ",
+            "GigabitEthernet0/3     unassigned      YES unset  down                  down    ",
+            "GigabitEthernet1/0     unassigned      YES unset  down                  down    ",
+            "GigabitEthernet1/1     unassigned      YES unset  down                  down    ",
+            "GigabitEthernet1/2     unassigned      YES unset  down                  down    ",
+            "GigabitEthernet1/3     unassigned      YES unset  down                  down    ",
+            "Loopback12             unassigned      YES unset  up                    up      ",
+            "Loopback41             4.4.4.1         YES manual up                    up      ",
+            "Loopback87             unassigned      YES unset  up                    up"
+        ],
+        [
+            ""
+        ]
+    ]
+}
+ok: [192.168.195.156] => {
+    "output_commands.stdout_lines": [
+        [
+            "Interface              IP-Address      OK? Method Status                Protocol",
+            "GigabitEthernet0/0     192.168.195.156 YES DHCP   up                    up      ",
+            "GigabitEthernet0/1     unassigned      YES unset  down                  down    ",
+            "GigabitEthernet0/2     unassigned      YES unset  down                  down    ",
+            "GigabitEthernet0/3     unassigned      YES unset  down                  down    ",
+            "GigabitEthernet1/0     unassigned      YES unset  down                  down    ",
+            "GigabitEthernet1/1     unassigned      YES unset  down                  down    ",
+            "GigabitEthernet1/2     unassigned      YES unset  down                  down    ",
+            "GigabitEthernet1/3     unassigned      YES unset  down                  down    ",
+            "Loopback12             unassigned      YES unset  up                    up      ",
+            "Loopback41             4.4.4.1         YES manual up                    up      ",
+            "Loopback87             unassigned      YES unset  up                    up"
+        ],
+        [
+            ""
+        ]
+    ]
+}
+
+PLAY RECAP ************************************************************************************************************************************************************************************************
+192.168.195.155            : ok=5    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+192.168.195.156            : ok=5    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+root@rohan-vm:/etc/ansible/ansible-playbook#

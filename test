@@ -1,0 +1,45 @@
+root@rohan-vm:/etc/ansible/ansible-playbook# ansible-playbook 6cisco_interface_ansible.yml -v
+Using /etc/ansible/ansible.cfg as config file
+
+PLAY [CISCO_CAT_IOS] *****************************************************************************************************************************************************
+
+TASK [Gathering Facts] ***************************************************************************************************************************************************
+[WARNING]: ansible-pylibssh not installed, falling back to paramiko
+ok: [192.168.195.156]
+ok: [192.168.195.155]
+
+TASK [Create new interfaces for Cisco Switches] **************************************************************************************************************************
+[WARNING]: To ensure idempotency and correct diff the input configuration lines should be similar to how they appear if present in the running configuration on device
+including the indentation
+changed: [192.168.195.156] => {"banners": {}, "changed": true, "commands": ["interface loopback 101", "ip address 101.1.1.1 255.255.255.255", "description MGMTLOOPBACK1", "interface loopback 102", "ip address 102.1.1.1 255.255.255.255", "description MGMTLOOPBACK2", "interface loopback 103", "ip address 103.1.1.1 255.255.255.255", "description MGMTLOOPBACK3", "interface loopback 104", "ip address 104.1.1.1 255.255.255.255", "description MGMTLOOPBACK4", "interface loopback 105", "ip address 105.1.1.1 255.255.255.255", "description MGMTLOOPBACK5"], "updates": ["interface loopback 101", "ip address 101.1.1.1 255.255.255.255", "description MGMTLOOPBACK1", "interface loopback 102", "ip address 102.1.1.1 255.255.255.255", "description MGMTLOOPBACK2", "interface loopback 103", "ip address 103.1.1.1 255.255.255.255", "description MGMTLOOPBACK3", "interface loopback 104", "ip address 104.1.1.1 255.255.255.255", "description MGMTLOOPBACK4", "interface loopback 105", "ip address 105.1.1.1 255.255.255.255", "description MGMTLOOPBACK5"]}
+changed: [192.168.195.155] => {"banners": {}, "changed": true, "commands": ["interface loopback 101", "ip address 101.1.1.1 255.255.255.255", "description MGMTLOOPBACK1", "interface loopback 102", "ip address 102.1.1.1 255.255.255.255", "description MGMTLOOPBACK2", "interface loopback 103", "ip address 103.1.1.1 255.255.255.255", "description MGMTLOOPBACK3", "interface loopback 104", "ip address 104.1.1.1 255.255.255.255", "description MGMTLOOPBACK4", "interface loopback 105", "ip address 105.1.1.1 255.255.255.255", "description MGMTLOOPBACK5"], "updates": ["interface loopback 101", "ip address 101.1.1.1 255.255.255.255", "description MGMTLOOPBACK1", "interface loopback 102", "ip address 102.1.1.1 255.255.255.255", "description MGMTLOOPBACK2", "interface loopback 103", "ip address 103.1.1.1 255.255.255.255", "description MGMTLOOPBACK3", "interface loopback 104", "ip address 104.1.1.1 255.255.255.255", "description MGMTLOOPBACK4", "interface loopback 105", "ip address 105.1.1.1 255.255.255.255", "description MGMTLOOPBACK5"]}
+
+PLAY RECAP ***************************************************************************************************************************************************************
+192.168.195.155            : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+192.168.195.156            : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+root@rohan-vm:/etc/ansible/ansible-playbook#
+root@rohan-vm:/etc/ansible/ansible-playbook#
+root@rohan-vm:/etc/ansible/ansible-playbook# ansible-playbook 7cisco_int_loop_delete_ansible.yml -v
+Using /etc/ansible/ansible.cfg as config file
+
+PLAY [CISCO_CAT_IOS] *****************************************************************************************************************************************************
+
+TASK [Gathering Facts] ***************************************************************************************************************************************************
+[WARNING]: ansible-pylibssh not installed, falling back to paramiko
+ok: [192.168.195.155]
+ok: [192.168.195.156]
+
+TASK [Delete loopback interfaces for Cisco Switches] *********************************************************************************************************************
+[WARNING]: To ensure idempotency and correct diff the input configuration lines should be similar to how they appear if present in the running configuration on device
+including the indentation
+changed: [192.168.195.156] => {"banners": {}, "changed": true, "commands": ["no interface loopback 101", "no interface loopback 102", "no interface loopback 103", "no interface loopback 104", "no interface loopback 105"], "updates": ["no interface loopback 101", "no interface loopback 102", "no interface loopback 103", "no interface loopback 104", "no interface loopback 105"]}
+changed: [192.168.195.155] => {"banners": {}, "changed": true, "commands": ["no interface loopback 101", "no interface loopback 102", "no interface loopback 103", "no interface loopback 104", "no interface loopback 105"], "updates": ["no interface loopback 101", "no interface loopback 102", "no interface loopback 103", "no interface loopback 104", "no interface loopback 105"]}
+
+PLAY RECAP ***************************************************************************************************************************************************************
+192.168.195.155            : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+192.168.195.156            : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+root@rohan-vm:/etc/ansible/ansible-playbook# date
+Ahad 12 Mei 2024 10:47:23  +08
+root@rohan-vm:/etc/ansible/ansible-playbook#

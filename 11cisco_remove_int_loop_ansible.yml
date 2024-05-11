@@ -1,0 +1,30 @@
+---
+- hosts: CISCO_CAT_IOS
+  connection: network_cli
+
+  vars_prompt:
+    - name: loopback_num
+      prompt: "Enter the Loopback ID number: "
+      private: no
+
+  tasks:
+    - name: Delete the attributes of loopback {{ loopback_num }}
+      cisco.ios.ios_l3_interfaces:
+        config:
+          - name: loopback {{ loopback_num }}
+        state: deleted
+
+    - name: Delete the loopback interface {{ loopback_num }}
+      cisco.ios.config:
+        lines:
+          - "no interface loopback {{ loopback_num }}"
+
+    - name: Verify if loopback {{ loopback_num }} is deleted or not?
+      ios_command:
+        commands:
+          - show ip int br
+          - show run | i {{ loopback_num }}
+      register: output_commands
+
+    - debug: var=output_commands.stdout_lines
+...
