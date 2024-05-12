@@ -1,0 +1,93 @@
+PANOS2024.yml
+root@rohan-vm:/etc/ansible# tree
+.
+├── ansible.cfg
+├── ansible.cfg.dpkg-old
+├── ansible-playbook
+│   ├── 10cisco_add_int_loopback_ansible_prompt.yml
+│   ├── 11cisco_remove_int_loop_ansible.yml
+│   ├── 12cisco_ssh_conditions_ansible.yml
+│   ├── 13cisco_ntp_conditional_ansible.yml
+│   ├── 14cisco_ntp_handler_notify_ansible.yml
+│   ├── 15cisco_ntp_ansible_loop.yml
+│   ├── 16palo_group_host_vars_ansible.yml
+│   ├── 3paloalto_config_ansible.yml
+│   ├── 5cisco_vlan_ansible.yml
+│   ├── 6cisco_interface_ansible.yml
+│   ├── 7cisco_int_loop_delete_ansible.yml
+│   ├── 8cisco_ospf_ansible.yml
+│   ├── interfacedata3334.yml
+│   ├── interfacedata333.yml
+│   ├── interface_delete_jinja_template.j2
+│   ├── interface_jinja_template.j2
+│   ├── ospfdata.yml
+│   ├── ospf_jinja_template.j2
+│   ├── vlandata333.yml
+│   └── vlan_jinja_template.j2
+├── group_vars
+│   └── PANOS2024.yml
+├── hosts
+├── host_vars
+│   ├── PANOS2024PA1.yml
+│   └── PANOS2024PA2.yml
+└── roles
+
+4 directories, 26 files
+root@rohan-vm:/etc/ansible# 
+
+
+root@rohan-vm:/etc/ansible/host_vars# cat PANOS2024PA1.yml
+---
+
+hostname: "PA12024"
+
+...
+root@rohan-vm:/etc/ansible/host_vars# 
+root@rohan-vm:/etc/ansible/host_vars# cat PANOS2024PA2.yml
+---
+
+hostname: "PA22024"
+
+...
+root@rohan-vm:/etc/ansible/host_vars# 
+
+
+
+root@rohan-vm:/etc/ansible/group_vars# cat PANOS2024.yml
+---
+    dns_server_primary123: "1.1.1.1"
+    dns_server_secondary123: "1.1.1.2"
+    panorama_primary123: "1.1.1.3"
+    panorama_secondary123: "1.1.1.4"
+    ntp_server_primary123: "1.1.1.5"
+    ntp_server_secondary123: "1.1.1.6"
+...
+root@rohan-vm:/etc/ansible/group_vars#
+
+root@rohan-vm:/etc/ansible/ansible-playbook# cat 16palo_group_host_vars_ansible.yml
+---
+- hosts: PANOS2024
+  gather_facts: false
+  connection: local
+
+  collections:
+  - paloaltonetworks.panos
+
+  vars:
+    provider_paloalto:
+      ip_address: "{{ ansible_host }}"
+      username: "admin"
+      password: "Cisco@123"
+
+  tasks:
+    - name: Configure DNS NTP and Panorama IP address
+      paloaltonetworks.panos.panos_mgtconfig:
+        provider: "{{ provider_paloalto }}"
+        dns_server_primary: "{{ dns_server_primary123 }}"
+        dns_server_secondary: "{{ dns_server_secondary123 }}"
+        panorama_primary: "{{ panorama_primary123 }}"
+        panorama_secondary: "{{ panorama_secondary123 }}"
+        ntp_server_primary: "{{ ntp_server_primary123 }}"
+        ntp_server_secondary: "{{ ntp_server_secondary123 }}"
+...
+root@rohan-vm:/etc/ansible/ansible-playbook#
