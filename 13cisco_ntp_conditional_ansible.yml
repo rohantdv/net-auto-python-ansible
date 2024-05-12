@@ -1,0 +1,90 @@
+---
+- hosts: CISCO_CAT_IOS
+  connection: network_cli
+
+  tasks:
+    - name: Ensure if NTP is configured or Not?
+      cisco.ios.ios_command:
+        commands:
+          - show run | i ntp
+      register: ntp_config
+    - debug: var=ntp_config.stdout_lines
+
+    - name: Configure NTP if not configured
+      cisco.ios.ios_config:
+        lines:
+          - ntp server 3.3.3.3
+      when: "'ntp server' not in ntp_config.stdout_lines"
+
+    - name: Verify if NTP is configured correctly
+      cisco.ios.ios_command:
+        commands:
+          - show run | i ntp
+      register: updated_ntp_config
+    - debug: var=updated_ntp_config.stdout_lines
+...
+
+###results###
+
+root@rohan-vm:/etc/ansible/ansible-playbook# ansible-playbook 13cisco_ntp_conditional_ansible.yml 
+
+PLAY [CISCO_CAT_IOS] ********************************************************************************************************
+
+TASK [Gathering Facts] ******************************************************************************************************
+[WARNING]: ansible-pylibssh not installed, falling back to paramiko
+ok: [192.168.195.158]
+ok: [192.168.195.157]
+
+TASK [Ensure if NTP is configured or Not?] **********************************************************************************
+ok: [192.168.195.157]
+ok: [192.168.195.158]
+
+TASK [debug] ****************************************************************************************************************
+ok: [192.168.195.157] => {
+    "ntp_config.stdout_lines": [
+        [
+            ""
+        ]
+    ]
+}
+ok: [192.168.195.158] => {
+    "ntp_config.stdout_lines": [
+        [
+            ""
+        ]
+    ]
+}
+
+TASK [Configure NTP if not configured] **************************************************************************************
+[WARNING]: To ensure idempotency and correct diff the input configuration lines should be similar to how they appear if
+present in the running configuration on device
+changed: [192.168.195.157]
+changed: [192.168.195.158]
+
+TASK [Verify if NTP is configured correctly] ********************************************************************************
+ok: [192.168.195.157]
+ok: [192.168.195.158]
+
+TASK [debug] ****************************************************************************************************************
+ok: [192.168.195.157] => {
+    "updated_ntp_config.stdout_lines": [
+        [
+            "ntp server 3.3.3.3"
+        ]
+    ]
+}
+ok: [192.168.195.158] => {
+    "updated_ntp_config.stdout_lines": [
+        [
+            "ntp server 3.3.3.3"
+        ]
+    ]
+}
+
+PLAY RECAP ******************************************************************************************************************
+192.168.195.157            : ok=6    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+192.168.195.158            : ok=6    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+root@rohan-vm:/etc/ansible/ansible-playbook# date
+Ahad 12 Mei 2024 06:52:28  +08
+root@rohan-vm:/etc/ansible/ansible-playbook#

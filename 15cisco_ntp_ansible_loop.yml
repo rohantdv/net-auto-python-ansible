@@ -1,0 +1,231 @@
+@@@@ANSIBLE_LOOP_CONCEPT@@@@
+
+ios.comfig:
+  lines:
+    - ntp server 7.7.7.7
+    - ntp server 8.8.8.8
+
+###OR/Alternative###
+
+ios.config:
+  lines:
+    - ntp server {{item}}
+  loop:
+    - 7.7.7.7
+    - 8.8.8.8
+    - 9.9.9.9
+
+
+###PLAYBOOK###
+
+---
+- hosts: CISCO_CAT_IOS
+  connection: network_cli
+
+  tasks:
+    - name: Ensure if NTP is configured or Not?
+      cisco.ios.ios_command:
+        commands:
+          - show run | i ntp
+      register: ntp_config
+
+    - debug: var=ntp_config.stdout_lines
+
+    - name: Configure NTP if not configured
+      cisco.ios.ios_config:
+        lines:
+          - ntp server {{ item }}
+      loop:
+        - 7.7.7.7
+        - 8.8.8.8
+        - 9.9.9.9
+      when: "'ntp server 7.7.7.7' or 'ntp server 8.8.8.8' or 'ntp server 9.9.9.9' not in ntp_config.stdout_lines"
+      notify: Save configuration
+
+    - name: Verify if NTP is configured correctly
+      cisco.ios.ios_command:
+        commands:
+          - show run | i ntp
+      register: updated_ntp_config
+
+    - debug: var=updated_ntp_config.stdout_lines
+
+  handlers:
+   - name: Save configuration
+     cisco.ios.ios_command:
+       commands: write memory
+     register: save_config
+   - debug: var=save_config.stdout_lines
+...
+
+
+####RESULT####
+
+root@rohan-vm:/etc/ansible/ansible-playbook# ansible-playbook 15cisco_ntp_ansible_loop.yml 
+
+PLAY [CISCO_CAT_IOS] ********************************************************************************************************
+
+TASK [Gathering Facts] ******************************************************************************************************
+[WARNING]: ansible-pylibssh not installed, falling back to paramiko
+ok: [192.168.195.158]
+ok: [192.168.195.157]
+
+TASK [Ensure if NTP is configured or Not?] **********************************************************************************
+ok: [192.168.195.157]
+ok: [192.168.195.158]
+
+TASK [debug] ****************************************************************************************************************
+ok: [192.168.195.157] => {
+    "ntp_config.stdout_lines": [
+        [
+            "ntp server 3.3.3.3",
+            "ntp server 4.4.4.4",
+            "ntp server 5.5.5.5"
+        ]
+    ]
+}
+ok: [192.168.195.158] => {
+    "ntp_config.stdout_lines": [
+        [
+            "ntp server 3.3.3.3",
+            "ntp server 4.4.4.4",
+            "ntp server 5.5.5.5"
+        ]
+    ]
+}
+
+TASK [Configure NTP if not configured] **************************************************************************************
+changed: [192.168.195.158] => (item=7.7.7.7)
+changed: [192.168.195.157] => (item=7.7.7.7)
+changed: [192.168.195.157] => (item=8.8.8.8)
+changed: [192.168.195.158] => (item=8.8.8.8)
+changed: [192.168.195.157] => (item=9.9.9.9)
+[WARNING]: To ensure idempotency and correct diff the input configuration lines should be similar to how they appear if
+present in the running configuration on device
+changed: [192.168.195.158] => (item=9.9.9.9)
+
+TASK [Verify if NTP is configured correctly] ********************************************************************************
+ok: [192.168.195.157]
+ok: [192.168.195.158]
+
+TASK [debug] ****************************************************************************************************************
+ok: [192.168.195.157] => {
+    "updated_ntp_config.stdout_lines": [
+        [
+            "ntp server 8.8.8.8",
+            "ntp server 9.9.9.9",
+            "ntp server 3.3.3.3",
+            "ntp server 4.4.4.4",
+            "ntp server 5.5.5.5",
+            "ntp server 7.7.7.7"
+        ]
+    ]
+}
+ok: [192.168.195.158] => {
+    "updated_ntp_config.stdout_lines": [
+        [
+            "ntp server 8.8.8.8",
+            "ntp server 9.9.9.9",
+            "ntp server 3.3.3.3",
+            "ntp server 4.4.4.4",
+            "ntp server 5.5.5.5",
+            "ntp server 7.7.7.7"
+        ]
+    ]
+}
+
+RUNNING HANDLER [Save configuration] ****************************************************************************************
+ok: [192.168.195.157]
+ok: [192.168.195.158]
+
+PLAY RECAP ******************************************************************************************************************
+192.168.195.157            : ok=7    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+192.168.195.158            : ok=7    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+root@rohan-vm:/etc/ansible/ansible-playbook# 
+root@rohan-vm:/etc/ansible/ansible-playbook# 
+root@rohan-vm:/etc/ansible/ansible-playbook# ansible-playbook 15cisco_ntp_ansible_loop.yml 
+
+PLAY [CISCO_CAT_IOS] ********************************************************************************************************
+
+TASK [Gathering Facts] ******************************************************************************************************
+[WARNING]: ansible-pylibssh not installed, falling back to paramiko
+ok: [192.168.195.157]
+ok: [192.168.195.158]
+
+TASK [Ensure if NTP is configured or Not?] **********************************************************************************
+ok: [192.168.195.157]
+ok: [192.168.195.158]
+
+TASK [debug] ****************************************************************************************************************
+ok: [192.168.195.157] => {
+    "ntp_config.stdout_lines": [
+        [
+            "ntp server 8.8.8.8",
+            "ntp server 9.9.9.9",
+            "ntp server 3.3.3.3",
+            "ntp server 4.4.4.4",
+            "ntp server 5.5.5.5",
+            "ntp server 7.7.7.7"
+        ]
+    ]
+}
+ok: [192.168.195.158] => {
+    "ntp_config.stdout_lines": [
+        [
+            "ntp server 8.8.8.8",
+            "ntp server 9.9.9.9",
+            "ntp server 3.3.3.3",
+            "ntp server 4.4.4.4",
+            "ntp server 5.5.5.5",
+            "ntp server 7.7.7.7"
+        ]
+    ]
+}
+
+TASK [Configure NTP if not configured] **************************************************************************************
+ok: [192.168.195.157] => (item=7.7.7.7)
+ok: [192.168.195.158] => (item=7.7.7.7)
+ok: [192.168.195.157] => (item=8.8.8.8)
+ok: [192.168.195.158] => (item=8.8.8.8)
+ok: [192.168.195.157] => (item=9.9.9.9)
+ok: [192.168.195.158] => (item=9.9.9.9)
+
+TASK [Verify if NTP is configured correctly] ********************************************************************************
+ok: [192.168.195.157]
+ok: [192.168.195.158]
+
+TASK [debug] ****************************************************************************************************************
+ok: [192.168.195.157] => {
+    "updated_ntp_config.stdout_lines": [
+        [
+            "ntp server 8.8.8.8",
+            "ntp server 9.9.9.9",
+            "ntp server 3.3.3.3",
+            "ntp server 4.4.4.4",
+            "ntp server 5.5.5.5",
+            "ntp server 7.7.7.7"
+        ]
+    ]
+}
+ok: [192.168.195.158] => {
+    "updated_ntp_config.stdout_lines": [
+        [
+            "ntp server 8.8.8.8",
+            "ntp server 9.9.9.9",
+            "ntp server 3.3.3.3",
+            "ntp server 4.4.4.4",
+            "ntp server 5.5.5.5",
+            "ntp server 7.7.7.7"
+        ]
+    ]
+}
+
+PLAY RECAP ******************************************************************************************************************
+192.168.195.157            : ok=6    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+192.168.195.158            : ok=6    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+root@rohan-vm:/etc/ansible/ansible-playbook# 
+root@rohan-vm:/etc/ansible/ansible-playbook# date
+Ahad 12 Mei 2024 07:25:25  +08
+root@rohan-vm:/etc/ansible/ansible-playbook#

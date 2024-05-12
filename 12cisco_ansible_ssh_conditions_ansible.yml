@@ -1,0 +1,92 @@
+---
+- hosts: CISCO_CAT_IOS
+  connection: network_cli
+
+  tasks:
+    - name: Ensure if SSH version is 2 or Not?
+      cisco.ios.ios_command:
+        commands:
+          - show run | i ip ssh
+      register: ssh_config
+    - debug: var=ssh_config.stdout_lines
+
+    - name: Configure SSH if SSH version is not 2
+      cisco.ios.ios_config:
+        lines:
+          - ip ssh version 2
+      when: "'ip ssh version 2' not in ssh_config.stdout_lines"
+
+    - name: Verify if SSH version 2 is configured correctly
+      cisco.ios.ios_command:
+        commands:
+          - show run | i ip ssh
+      register: updated_ssh_config
+    - debug: var=updated_ssh_config.stdout_lines
+...
+
+###results###
+
+root@rohan-vm:/etc/ansible/ansible-playbook# ansible-playbook 12cisco_ssh_conditions_ansible.yml -v
+Using /etc/ansible/ansible.cfg as config file
+
+PLAY [CISCO_CAT_IOS] ********************************************************************************************************
+
+TASK [Gathering Facts] ******************************************************************************************************
+[WARNING]: ansible-pylibssh not installed, falling back to paramiko
+ok: [192.168.195.157]
+ok: [192.168.195.158]
+
+TASK [Ensure if SSH version is 2 or Not?] ***********************************************************************************
+ok: [192.168.195.157] => {"changed": false, "stdout": [""], "stdout_lines": [[""]]}
+ok: [192.168.195.158] => {"changed": false, "stdout": [""], "stdout_lines": [[""]]}
+
+TASK [debug] ****************************************************************************************************************
+ok: [192.168.195.157] => {
+    "ssh_config.stdout_lines": [
+        [
+            ""
+        ]
+    ]
+}
+ok: [192.168.195.158] => {
+    "ssh_config.stdout_lines": [
+        [
+            ""
+        ]
+    ]
+}
+
+TASK [Configure SSH if SSH version is not 2] ********************************************************************************
+[WARNING]: To ensure idempotency and correct diff the input configuration lines should be similar to how they appear if
+present in the running configuration on device
+changed: [192.168.195.157] => {"banners": {}, "changed": true, "commands": ["ip ssh version 2"], "updates": ["ip ssh version 2"]}
+changed: [192.168.195.158] => {"banners": {}, "changed": true, "commands": ["ip ssh version 2"], "updates": ["ip ssh version 2"]}
+
+TASK [Verify if SSH version 2 is configured correctly] **********************************************************************
+ok: [192.168.195.157] => {"changed": false, "stdout": ["ip ssh version 2"], "stdout_lines": [["ip ssh version 2"]]}
+ok: [192.168.195.158] => {"changed": false, "stdout": ["ip ssh version 2"], "stdout_lines": [["ip ssh version 2"]]}
+
+TASK [debug] ****************************************************************************************************************
+ok: [192.168.195.157] => {
+    "updated_ssh_config.stdout_lines": [
+        [
+            "ip ssh version 2"
+        ]
+    ]
+}
+ok: [192.168.195.158] => {
+    "updated_ssh_config.stdout_lines": [
+        [
+            "ip ssh version 2"
+        ]
+    ]
+}
+
+PLAY RECAP ******************************************************************************************************************
+192.168.195.157            : ok=6    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+192.168.195.158            : ok=6    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+root@rohan-vm:/etc/ansible/ansible-playbook# 
+root@rohan-vm:/etc/ansible/ansible-playbook# date
+Ahad 12 Mei 2024 06:04:32  +08
+root@rohan-vm:/etc/ansible/ansible-playbook#
