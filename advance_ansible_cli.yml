@@ -1,0 +1,144 @@
+
+root@rohan-vm:/etc/ansible/ansible-playbook# cat /etc/ssh/ssh_config
+
+#   RekeyLimit 1G 1h
+#   UserKnownHostsFile ~/.ssh/known_hosts.d/%k
+    SendEnv LANG LC_*
+    HashKnownHosts yes
+    GSSAPIAuthentication yes
+
+
+Ciphers aes256-cbc,aes128-ctr,aes192-ctr,aes256-ctr,aes128-cbc,3des-cbc
+KexAlgorithms +diffie-hellman-group1-sha1,diffie-hellman-group-exchange-sha1,diffie-hellman-group-exchange-sha256
+HostkeyAlgorithms +ssh-rsa,ssh-dss
+
+root@rohan-vm:/etc/ansible/ansible-playbook# 
+
+root@rohan-vm:/etc/ansible/ansible-playbook# cat /etc/ansible/hosts
+# This is the default ansible 'hosts' file.
+#
+# It should live in /etc/ansible/hosts
+#
+#   - Comments begin with the '#' character
+#   - Blank lines are ignored
+#   - Groups of hosts are delimited by [header] elements
+#   - You can enter hostnames or ip addresses
+#   - A hostname/ip can be a member of multiple groups
+
+[CISCO_CAT_IOS]
+192.168.195.158 ansible_ssh_user=admin ansible_ssh_pass=cisco ansible_network_os=ios
+192.168.195.156 ansible_ssh_user=admin ansible_ssh_pass=cisco ansible_network_os=ios
+
+[PANOS2024]
+PANOS2024PA1 ansible_host=192.168.195.144
+PANOS2024PA2 ansible_host=192.168.195.145
+
+
+
+
+
+root@rohan-vm:/etc/ansible# ansible CISCO_CAT_IOS -i ./hosts -m raw -a "show ip int br" -u admin -k
+SSH password:
+192.168.195.158 | CHANGED | rc=0 >>
+
+Interface              IP-Address      OK? Method Status                Protocol
+GigabitEthernet0/0     192.168.195.158 YES DHCP   up                    up      
+GigabitEthernet0/1     unassigned      YES unset  down                  down    
+GigabitEthernet0/2     unassigned      YES unset  down                  down    
+GigabitEthernet0/3     unassigned      YES unset  down                  down    
+GigabitEthernet1/0     unassigned      YES unset  down                  down    
+GigabitEthernet1/1     unassigned      YES unset  down                  down    
+GigabitEthernet1/2     unassigned      YES unset  down                  down    
+GigabitEthernet1/3     unassigned      YES unset  down                  down
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory Center. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************Shared connection to 192.168.195.158 closed.
+
+192.168.195.156 | CHANGED | rc=0 >>
+
+Interface              IP-Address      OK? Method Status                Protocol
+GigabitEthernet0/0     192.168.195.156 YES DHCP   up                    up      
+GigabitEthernet0/1     unassigned      YES unset  down                  down    
+GigabitEthernet0/2     unassigned      YES unset  down                  down    
+GigabitEthernet0/3     unassigned      YES unset  down                  down    
+GigabitEthernet1/0     unassigned      YES unset  down                  down    
+GigabitEthernet1/1     unassigned      YES unset  down                  down    
+GigabitEthernet1/2     unassigned      YES unset  down                  down    
+GigabitEthernet1/3     unassigned      YES unset  down                  down
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory Center. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************Shared connection to 192.168.195.156 closed.
+
+root@rohan-vm:/etc/ansible#
+
+===============
+
+
+root@rohan-vm:/etc/ansible# ansible 192.168.195.156 -i ./hosts -m raw -a "show ver | i uptime" -u admin -k
+SSH password:
+192.168.195.156 | CHANGED | rc=0 >>
+MLSSWITCH14 uptime is 16 minutes
+
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory Center. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************Shared connection to 192.168.195.156 closed.
+
+root@rohan-vm:/etc/ansible#
+
+
+
+============================================================================
+
+
+
+root@rohan-vm:/etc/ansible# ansible all -i ./hosts -m raw -a "show run | i hostname" -a admin -k
+SSH password:
+192.168.195.158 | CHANGED | rc=0 >>
+
+Line has invalid autocommand "admin"
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory Center. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************Shared connection to 192.168.195.158 closed.
+
+192.168.195.156 | CHANGED | rc=0 >>
+Line has invalid autocommand "admin"
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory Center. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************Shared connection to 192.168.195.156 closed.
+
+PANOS2024PA1 | UNREACHABLE! => {
+    "changed": false,
+    "msg": "Failed to connect to the host via ssh: ssh: connect to host 192.168.195.144 port 22: No route to host",
+    "unreachable": true
+}
+PANOS2024PA2 | UNREACHABLE! => {
+    "changed": false,
+    "msg": "Failed to connect to the host via ssh: ssh: connect to host 192.168.195.145 port 22: No route to host",
+    "unreachable": true
+}
+root@rohan-vm:/etc/ansible#
